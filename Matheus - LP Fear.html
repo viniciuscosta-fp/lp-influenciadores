@@ -11,20 +11,13 @@
 <body>
 
 <!-- ============================================================
-     TOP RIBBON
-============================================================ -->
-<div class="ribbon">
-  <strong>Oferta exclusiva</strong> · seguidores do Matheus · planos com até 47% OFF + bônus de Inglês para Tech
-</div>
-
-<!-- ============================================================
      NAV
 ============================================================ -->
-<nav class="nav">
+<!-- <nav class="nav">
   <div class="nav__inner">
     <div class="cobrand">
       <span class="cobrand__handle">
-        <span class="cobrand__avatar"><img src="assets/matheus-avatar.svg" alt="Matheus"></span>
+        <span class="cobrand__avatar"><img src="assets/FOTO MATHEUS.jpeg" alt="Matheus"></span>
         @matheusdev
       </span>
       <span class="cobrand__plus">+</span>
@@ -40,7 +33,7 @@
     </div>
     <a href="#planos" class="nav__cta">Ver planos →</a>
   </div>
-</nav>
+</nav> -->
 
 <!-- ============================================================
      BLOCK 1 — HERO
@@ -49,7 +42,7 @@
   <div class="hero__grid">
     <div class="hero__copy">
       <div class="hero__eyebrow">
-        <span class="avatar-sm"><img src="assets/matheus-avatar.svg" alt="Matheus"></span>
+        <span class="avatar-sm"><img src="assets/FOTO MATHEUS.jpeg" alt="Matheus"></span>
         @matheusdev
         <span class="plus">+</span>
         <span class="brand-mini">
@@ -59,7 +52,7 @@
 
       <h1 class="h-display">Cada mês sem inglês é um mês de <em>salário em dólar</em> passando batido.</h1>
 
-      <p class="hero__sub">Parceria oficial com o Matheus. Condições especiais pra quem já entendeu que inglês não é mais "diferencial" — é o que separa quem ganha em real de quem ganha em dólar.</p>
+      <p class="hero__sub">Parceria oficial com o Matheus. Condições especiais para quem já entendeu que inglês não é mais "diferencial" — é o que separa quem ganha em real de quem ganha em dólar.</p>
 
       <div class="hero__tagline">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>
@@ -94,7 +87,7 @@
     </div>
 
     <div class="hero__photo">
-      <img src="assets/matheus-portrait.svg" alt="Matheus">
+      <img src="assets/FOTO MATHEUS.jpeg" alt="Matheus">
       <div class="hero__photoTag">
         <span class="loc">Home office · Hoje</span>
         <span>Matheus — engenheiro de software, trabalha em inglês todos os dias.</span>
@@ -104,12 +97,19 @@
 </section>
 
 <!-- ============================================================
+     TOP RIBBON
+============================================================ -->
+<div class="ribbon">
+  <strong>Oferta exclusiva</strong> · seguidores do Matheus · planos com até 47% OFF + bônus de Inglês para Tech
+</div>
+
+
+<!-- ============================================================
      BLOCK 2 — A VIRADA
 ============================================================ -->
 <section class="virada" data-screen-label="02 A Virada">
   <div class="virada__grid">
     <div class="virada__article">
-      <div class="virada__kicker">A Virada · Capítulo 01</div>
       <h2>O preço que eu paguei por demorar a aprender inglês</h2>
       <div class="virada__body">
         <p class="dropcap">Eu sou engenheiro de software. Trabalho com inglês todos os dias — <strong>porque tudo na nossa área tá em inglês</strong>.</p>
@@ -117,7 +117,7 @@
         <p>Se eu pudesse falar com o Matheus de 5 anos atrás, eu diria uma coisa: <strong>comece agora</strong>. Não tem atalho, não tem hack. Mas o que tem é o método certo — e foi por isso que fechei essa parceria com a Fluencypass. Pra você não cometer o mesmo erro que eu.</p>
       </div>
       <div class="virada__sig">
-        <div class="sig-avatar"><img src="assets/matheus-avatar.svg" alt="Matheus"></div>
+        <div class="sig-avatar"><img src="assets/FOTO MATHEUS.jpeg" alt="Matheus"></div>
         <div>
           <div class="sig-name">Matheus</div>
           <div class="sig-meta">@matheusdev · Engenheiro de software</div>
@@ -128,15 +128,7 @@
     <div>
       <div class="virada__photo">
         <span class="corner-tag">Bastidores</span>
-        <image-slot id="virada-matheus" shape="rounded" radius="14" placeholder="Foto do Matheus em contexto dev/home office — reportagem, vertical 4:5"></image-slot>
-        <div class="placeholder">
-          <svg viewBox="0 0 200 250" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.2">
-            <rect x="0" y="0" width="200" height="250" fill="currentColor" fill-opacity="0.06" stroke="none"/>
-            <circle cx="100" cy="95" r="32"/>
-            <path d="M40 250 C 40 180, 70 150, 100 150 C 130 150, 160 180, 160 250" />
-            <line x1="0" y1="200" x2="200" y2="200" stroke-dasharray="2 4" stroke-opacity="0.4"/>
-          </svg>
-        </div>
+        <img src="./assets/FOTO VIAGEM MATHEUS.jpeg" alt="Matheus em viagem">
       </div>
       <p class="virada__caption">"Não tem atalho, não tem hack. O que tem é o método certo."</p>
     </div>
@@ -202,11 +194,10 @@
 <section class="section plans" id="planos" data-screen-label="04 Planos">
   <div class="container">
     <div class="plans__head">
-      <span class="eyebrow"><span class="dot"></span>Planos exclusivos para seguidores do Matheus</span>
       <h2 class="h-section">Escolha o plano pra destravar o inglês e <em style="color:var(--coral);font-style:normal">parar de perder oportunidade</em></h2>
     </div>
 
-    <div class="plans__grid">
+    <div class="plans__grid plans__grid--carousel">
       <!-- STARTER -->
       <article class="plan">
         <span class="plan__name">Starter</span>
@@ -371,7 +362,6 @@
 <section class="section maria-test" data-screen-label="06 Matheus Depoimento">
   <div class="container">
     <div class="maria-test__head">
-      <span class="eyebrow" style="color:var(--coral);justify-content:center"><span class="dot"></span>Direto da fonte</span>
       <h2 class="h-section">Por que o Matheus escolheu a Fluencypass</h2>
       <p class="lead">Em 1 minuto, o Matheus conta por que essa parceria faz sentido pra quem é dev e quer trabalhar lá fora.</p>
     </div>
@@ -407,7 +397,6 @@
 <section class="section method" id="metodo" data-screen-label="07 Método">
   <div class="container">
     <div class="method__head">
-      <span class="eyebrow"><span class="dot"></span>Método Fluencypass</span>
       <h2 class="h-section">O único método do mundo com o <em style="color:var(--coral);font-style:normal">ciclo completo</em> para você falar inglês</h2>
       <p class="lead">Desenvolvido pra quem precisa destravar o inglês de forma rápida e prática.</p>
     </div>
@@ -464,11 +453,10 @@
 <section class="section students" data-screen-label="08 Alunos">
   <div class="container">
     <div class="students__head">
-      <span class="eyebrow" style="color:var(--coral);justify-content:center"><span class="dot"></span>Quem já passou pela Fluencypass</span>
       <h2 class="h-section" style="margin-top:16px">O que dizem profissionais que <em style="color:var(--coral);font-style:normal">confiaram</em> na Fluencypass</h2>
     </div>
 
-    <div class="students__grid">
+    <div class="students__grid students__grid--carousel">
       <article class="student-card">
         <div class="student-card__player">
           <image-slot id="student-heloisa" shape="rect" placeholder="Thumbnail vídeo · Heloisa Pestana"></image-slot>
@@ -532,10 +520,10 @@
 <section class="section section--dark compare" data-screen-label="09 Comparativo">
   <div class="container">
     <div class="compare__head">
-      <span class="eyebrow"><span class="dot"></span>Por que escolhem</span>
       <h2 class="h-section">Por que devs escolhem a Fluencypass?</h2>
     </div>
 
+    <div class="compare__table-wrap">
     <table class="compare__table">
       <thead>
         <tr>
@@ -612,6 +600,7 @@
         </tr>
       </tbody>
     </table>
+    </div>
 
     <div class="compare__cta">
       <a href="#planos" class="btn btn--coral">
@@ -628,7 +617,6 @@
 <section class="section faq" id="faq" data-screen-label="10 FAQ">
   <div class="container">
     <div class="faq__head">
-      <span class="eyebrow" style="color:var(--coral);justify-content:center"><span class="dot"></span>Perguntas frequentes</span>
       <h2 class="h-section" style="margin-top:16px">Ficou com alguma dúvida?</h2>
     </div>
 
@@ -763,7 +751,7 @@
   <div class="footer__inner">
     <div class="footer__top">
       <div class="footer__cobrand">
-        <span class="cobrand__avatar"><img src="assets/matheus-avatar.svg" alt="Matheus"></span>
+        <span class="cobrand__avatar"><img src="assets/FOTO MATHEUS.jpeg" alt="Matheus"></span>
         <span class="cobrand__handle">@matheusdev</span>
         <span class="cobrand__plus">+</span>
         <span class="cobrand__brand">
@@ -810,6 +798,16 @@
       item.classList.toggle('is-open');
     });
   });
+})();
+</script>
+
+
+<script>
+(function() {
+  var track = document.querySelector('.plans__grid--carousel');
+  var featured = track && track.querySelector('.plan--featured');
+  if (!track || !featured) return;
+  track.scrollLeft = featured.offsetLeft - (track.offsetWidth - featured.offsetWidth) / 2;
 })();
 </script>
 
