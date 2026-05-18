@@ -197,7 +197,7 @@
       <h2 class="h-section">Escolha o plano ideal pra sua <em style="color:var(--coral);font-style:normal">virada de carreira</em></h2>
     </div>
 
-    <div class="plans__grid">
+    <div class="plans__grid plans__grid--carousel">
       <!-- STARTER -->
       <article class="plan">
         <span class="plan__name">Starter</span>
@@ -456,7 +456,7 @@
       <h2 class="h-section" style="margin-top:16px">O que dizem profissionais que <em style="color:var(--coral);font-style:normal">confiaram</em> na Fluencypass</h2>
     </div>
 
-    <div class="students__grid">
+    <div class="students__grid students__grid--carousel">
       <article class="student-card">
         <div class="student-card__player">
           <image-slot id="student-heloisa" shape="rect" placeholder="Thumbnail vídeo · Heloisa Pestana"></image-slot>
@@ -798,6 +798,15 @@
       item.classList.toggle('is-open');
     });
   });
+})();
+</script>
+
+<script>
+(function() {
+  var track = document.querySelector('.plans__grid--carousel');
+  var featured = track && track.querySelector('.plan--featured');
+  if (!track || !featured) return;
+  track.scrollLeft = featured.offsetLeft - (track.offsetWidth - featured.offsetWidth) / 2;
 })();
 </script>
 
