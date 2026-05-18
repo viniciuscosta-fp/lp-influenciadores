@@ -50,7 +50,7 @@
         </span>
       </div>
 
-      <h1 class="h-display">Cada mês sem inglês é um mês de <em>salário em dólar</em> passando batido.</h1>
+      <h1 class="h-display">Cada mês sem inglês é mais um <em>salário em dólar</em> passando batido.</h1>
 
       <p class="hero__sub">Parceria oficial com o Matheus. Condições especiais para quem já entendeu que inglês não é mais "diferencial" — é o que separa quem ganha em real de quem ganha em dólar.</p>
 
@@ -774,6 +774,73 @@
 </footer>
 
 <!-- ============================================================
+     MODAL FORM
+============================================================ -->
+<div class="modal-overlay" id="planModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <button class="modal__close" aria-label="Fechar">×</button>
+    <h3 class="modal__title" id="modalTitle">Quase lá!</h3>
+    <p class="modal__sub">Conta um pouco sobre você para continuar.</p>
+    <form class="modal__form" id="planForm" novalidate>
+      <div class="modal__field">
+        <label for="firstName">Primeiro nome</label>
+        <input type="text" id="firstName" name="firstName" placeholder="Seu primeiro nome" required autocomplete="given-name">
+      </div>
+      <div class="modal__field">
+        <label for="ageRange">Faixa etária</label>
+        <div class="modal__select-wrap">
+          <select id="ageRange" name="ageRange" required>
+            <option value="" disabled selected>Selecione sua faixa etária</option>
+            <option value="até-14">Até 14 anos</option>
+            <option value="15-17">15 – 17 anos</option>
+            <option value="18-24">18 – 24 anos</option>
+            <option value="25-35">25 – 35 anos</option>
+            <option value="36-45">36 – 45 anos</option>
+            <option value="45-59">45 – 59 anos</option>
+            <option value="60+">60 anos ou mais</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal__field">
+        <label for="phone">Celular / WhatsApp</label>
+        <input type="tel" id="phone" name="phone" placeholder="(11) 91234-5678" required autocomplete="tel">
+      </div>
+      <div class="modal__field">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="seu@email.com" required autocomplete="email">
+      </div>
+      <div class="modal__field">
+        <label for="timing">Quando pretende começar?</label>
+        <div class="modal__select-wrap">
+          <select id="timing" name="timing" required>
+            <option value="" disabled selected>Selecione uma opção</option>
+            <option value="imediatamente">Imediatamente</option>
+            <option value="proxima-semana">Na próxima semana</option>
+            <option value="proximo-mes">No próximo mês</option>
+            <option value="nao-tenho-certeza">Não tenho certeza ainda</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal__field">
+        <label for="motivation">Principal motivação</label>
+        <div class="modal__select-wrap">
+          <select id="motivation" name="motivation" required>
+            <option value="" disabled selected>Selecione uma opção</option>
+            <option value="aprendizado-pessoal">Aprendizado e realização pessoal</option>
+            <option value="crescimento-profissional">Crescimento profissional</option>
+            <option value="entretenimento-cultura">Entretenimento e cultura</option>
+            <option value="estudar-morar-exterior">Estudar e/ou morar no exterior</option>
+            <option value="viagens-turismo">Viagens e turismo</option>
+            <option value="outros">Outros</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn--coral btn--block">Continuar</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============================================================
      STICKY MOBILE CTA
 ============================================================ -->
 <div class="sticky-cta">
@@ -808,6 +875,80 @@
   var featured = track && track.querySelector('.plan--featured');
   if (!track || !featured) return;
   track.scrollLeft = featured.offsetLeft - (track.offsetWidth - featured.offsetWidth) / 2;
+})();
+</script>
+
+<script>
+(function () {
+  var overlay = document.getElementById('planModal');
+  var form    = document.getElementById('planForm');
+
+  // Inject prices and checkout links into each plan card
+  var planPrices    = ['R$149,00/mês', 'R$247,00/mês', 'R$497,00/mês'];
+  var planCheckouts = ['#checkout-starter', '#checkout-professional', '#checkout-premium'];
+  document.querySelectorAll('.plan').forEach(function (card, i) {
+    var offEl = card.querySelector('.plan__off');
+    if (offEl) {
+      var priceEl = document.createElement('span');
+      priceEl.className = 'plan__price';
+      priceEl.innerHTML = planPrices[i].replace('/mês', '<span class="plan__price-period">/mês</span>');
+      offEl.parentNode.insertBefore(priceEl, offEl.nextSibling);
+    }
+    var ctaEl = card.querySelector('.plan__cta');
+    if (ctaEl) ctaEl.setAttribute('data-checkout', planCheckouts[i]);
+  });
+
+  // Phone formatter → (11) 91234-5678
+  document.getElementById('phone').addEventListener('input', function () {
+    var d = this.value.replace(/\D/g, '').slice(0, 11);
+    if (d.length === 0)      this.value = '';
+    else if (d.length <= 2)  this.value = '(' + d;
+    else if (d.length <= 7)  this.value = '(' + d.slice(0,2) + ') ' + d.slice(2);
+    else                     this.value = '(' + d.slice(0,2) + ') ' + d.slice(2,7) + '-' + d.slice(7);
+  });
+
+  document.querySelectorAll('.plan__cta').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      if (document.body.classList.contains('plans-unlocked')) return;
+      e.preventDefault();
+      overlay.classList.add('is-open');
+      document.getElementById('firstName').focus();
+    });
+  });
+
+  overlay.querySelector('.modal__close').addEventListener('click', function () {
+    overlay.classList.remove('is-open');
+  });
+
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) overlay.classList.remove('is-open');
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') overlay.classList.remove('is-open');
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var valid = form.firstName.value.trim() &&
+                form.ageRange.value &&
+                form.phone.value.trim() &&
+                form.email.value.trim() &&
+                form.timing.value &&
+                form.motivation.value;
+    if (!valid) return;
+
+    // Reveal prices, update buttons
+    document.body.classList.add('plans-unlocked');
+    document.querySelectorAll('.plan__cta').forEach(function (btn) {
+      btn.href = btn.getAttribute('data-checkout') || '#';
+      btn.textContent = 'Comprar agora';
+    });
+
+    overlay.classList.remove('is-open');
+    var planos = document.getElementById('planos');
+    if (planos) planos.scrollIntoView({ behavior: 'smooth' });
+  });
 })();
 </script>
 

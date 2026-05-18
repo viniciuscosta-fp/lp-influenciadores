@@ -28,6 +28,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-sans);
   font-feature-settings: 'ss01', 'cv11';
@@ -1276,6 +1277,98 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   body { padding-bottom: 0; }
 }
 .sticky-cta .btn { width: 100%; justify-content: center; padding: 16px; font-size: 15px; }
+
+/* ====================================================================
+ * MODAL FORM
+ * ==================================================================== */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  z-index: 300;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.is-open { display: flex; }
+.modal {
+  background: var(--paper);
+  border-radius: 16px;
+  padding: 40px 36px 36px;
+  width: 100%;
+  max-width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal__close {
+  position: absolute; top: 14px; right: 14px;
+  width: 32px; height: 32px;
+  border-radius: 999px;
+  background: var(--gray-100);
+  display: grid; place-items: center;
+  font-size: 20px; line-height: 1;
+  color: var(--gray-600);
+  cursor: pointer; border: none;
+  font-family: inherit;
+}
+.modal__close:hover { background: var(--gray-200); }
+.modal__title { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 8px; color: var(--gray-950); }
+.modal__sub { color: var(--gray-600); margin: 0 0 28px; font-size: 15px; line-height: 1.5; }
+.modal__field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+.modal__field label { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+.modal__field input,
+.modal__field select {
+  padding: 12px 14px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--gray-950);
+  background: #fff;
+  outline: none;
+  transition: border-color .15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.modal__field input::placeholder { color: var(--gray-400); }
+.modal__field input:focus,
+.modal__field select:focus { border-color: var(--coral); }
+.modal__select-wrap { position: relative; }
+.modal__select-wrap::after {
+  content: '';
+  pointer-events: none;
+  position: absolute; right: 14px; top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--gray-600);
+  margin-top: 3px;
+}
+
+@media (max-width: 500px) {
+  .modal { padding: 32px 20px 24px; }
+}
+
+/* Plan price reveal */
+.plan__price {
+  display: none;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: inherit;
+  line-height: 1;
+}
+.plan__price-period {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--gray-500);
+}
+body.plans-unlocked .plan__off   { display: none; }
+body.plans-unlocked .plan__title { display: none; }
+body.plans-unlocked .plan__price { display: block; }
 
 /* ====================================================================
  * MOBILE PADDING ADJUSTMENTS
