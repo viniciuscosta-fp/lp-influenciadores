@@ -122,6 +122,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   text-align: center;
   letter-spacing: 0.02em;
   border-bottom: 1px solid var(--ink-line);
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
 }
 .ribbon strong { color: var(--coral); font-weight: 600; }
 
@@ -396,13 +399,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   max-width: 380px;
   line-height: 1.5;
 }
-.virada__photo .placeholder {
-  position: absolute; inset: 0;
-  display: grid; place-items: center;
-  background: linear-gradient(135deg, #E0DCD2 0%, #C8C0B0 100%);
-  color: rgba(0,0,0,0.25);
+.virada__photo img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
 }
-.virada__photo .placeholder svg { width: 50%; height: auto; }
 .virada__photo .corner-tag {
   position: absolute; top: 16px; left: 16px;
   background: rgba(255,255,255,0.92);
@@ -423,10 +425,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
  * ==================================================================== */
 .aspira { color: var(--gray-50); }
 .aspira__head {
-  text-align: left;
-  display: grid; grid-template-columns: 1.2fr 1fr;
-  gap: 48px;
-  align-items: end;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: center;
   margin-bottom: 64px;
 }
 .aspira__head h2 { font-size: clamp(36px, 4.4vw, 60px); }
@@ -1043,13 +1046,21 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .compare__head .eyebrow { color: var(--coral); justify-content: center; }
 .compare__head h2 { margin-top: 16px; }
 
+.compare__table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 18px;
+  border: 1px solid var(--ink-line);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
 .compare__table {
   width: 100%;
+  min-width: 560px;
   border-collapse: separate;
   border-spacing: 0;
-  max-width: 1100px; margin: 0 auto;
   background: var(--ink-soft);
-  border: 1px solid var(--ink-line);
   border-radius: 18px;
   overflow: hidden;
 }
