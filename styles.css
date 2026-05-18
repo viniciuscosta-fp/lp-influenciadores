@@ -150,10 +150,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .cobrand__avatar {
   width: 32px; height: 32px; border-radius: 999px;
-  background: linear-gradient(135deg, #FFD6CF, #ED6A6D 60%, #6B1E20);
-  display: grid; place-items: center;
-  color: #fff; font-weight: 700; font-size: 13px;
+  overflow: hidden;
+  background: var(--gray-800);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2);
+  flex-shrink: 0;
+}
+.cobrand__avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  display: block;
 }
 .cobrand__plus {
   width: 22px; height: 22px; border-radius: 999px;
@@ -163,14 +169,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: rgba(255,255,255,0.7);
 }
 .cobrand__brand {
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: 10px;
   font-weight: 600;
 }
-.cobrand__brand .logo {
-  width: 22px; height: 22px;
-  color: #fff;
+.cobrand__brand .logo-img {
+  height: 22px;
+  width: auto;
+  display: block;
 }
-.cobrand__brand .logo svg { width: 100%; height: 100%; }
 
 .nav__links {
   display: flex; gap: 28px;
@@ -202,27 +208,34 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .hero__copy { display: flex; flex-direction: column; gap: 32px; }
 .hero__eyebrow {
   display: inline-flex; align-items: center; gap: 12px;
-  padding: 8px 14px 8px 8px;
+  padding: 6px 16px 6px 6px;
   background: rgba(255,255,255,0.06);
   border: 1px solid var(--ink-line);
   border-radius: 999px;
   width: fit-content;
   font-size: 13px;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255,255,255,0.9);
 }
 .hero__eyebrow .avatar-sm {
-  width: 24px; height: 24px; border-radius: 999px;
-  background: linear-gradient(135deg, #FFD6CF, #ED6A6D 60%, #6B1E20);
+  width: 28px; height: 28px; border-radius: 999px;
+  overflow: hidden;
   border: 1px solid rgba(255,255,255,0.2);
-  display: grid; place-items: center;
-  font-size: 11px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+  background: var(--gray-800);
 }
-.hero__eyebrow .plus { color: rgba(255,255,255,0.4); }
+.hero__eyebrow .avatar-sm img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+}
+.hero__eyebrow .plus { color: rgba(255,255,255,0.35); }
 .hero__eyebrow .brand-mini {
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex; align-items: center;
   font-weight: 600;
 }
-.hero__eyebrow .brand-mini svg { width: 16px; height: 16px; }
+.hero__eyebrow .brand-mini img {
+  height: 16px; width: auto; display: block;
+}
 
 .hero h1 { margin: 0; }
 .hero__sub { font-size: clamp(16px, 1.3vw, 19px); color: rgba(255,255,255,0.7); max-width: 560px; line-height: 1.55; margin: 0; }
@@ -259,7 +272,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .hero__metric .n { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; color: #fff; }
 .hero__metric .l { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.35; margin-top: 4px; }
 
-/* Hero photo */
+/* Hero photo (framed) */
 .hero__photo {
   position: relative;
   aspect-ratio: 4 / 5;
@@ -267,7 +280,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   overflow: hidden;
   background: #1a1a1a;
 }
-.hero__photo image-slot { width: 100%; height: 100%; }
+.hero__photo img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
 .hero__photo::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.55) 100%);
@@ -287,17 +306,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: inline-flex; align-items: center; gap: 6px;
 }
 .hero__photoTag .loc::before { content: ''; width: 5px; height: 5px; background: var(--coral); border-radius: 999px; }
-
-/* placeholder graphic for hero (skyline glyph) */
-.hero__photo .placeholder {
-  position: absolute; inset: 0;
-  display: grid; place-items: center;
-  background:
-    radial-gradient(ellipse at 70% 30%, rgba(237,106,109,0.18), transparent 55%),
-    linear-gradient(135deg, #1c1c22 0%, #0e0e12 100%);
-  color: rgba(255,255,255,0.3);
-}
-.hero__photo .placeholder svg { width: 60%; height: auto; }
 
 @media (max-width: 980px) {
   .hero__grid { grid-template-columns: 1fr; gap: 40px; }
@@ -357,12 +365,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-top: 1px solid var(--gray-300);
 }
 .virada__sig .sig-avatar {
-  width: 48px; height: 48px; border-radius: 999px;
-  background: linear-gradient(135deg, #FFD6CF, #ED6A6D 60%, #6B1E20);
+  width: 52px; height: 52px; border-radius: 999px;
+  overflow: hidden;
   border: 2px solid #fff;
   box-shadow: var(--shadow-sm);
-  display: grid; place-items: center;
-  font-weight: 700; color: #fff; font-size: 14px;
+  flex-shrink: 0;
+}
+.virada__sig .sig-avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  display: block;
 }
 .virada__sig .sig-name { font-weight: 600; font-size: 16px; color: var(--gray-950); }
 .virada__sig .sig-meta { font-size: 13px; color: var(--gray-600); }
@@ -1149,11 +1162,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .footer__cobrand {
   display: flex; align-items: center; gap: 20px;
 }
-.footer__cobrand .cobrand__avatar { width: 48px; height: 48px; font-size: 16px; }
+.footer__cobrand .cobrand__avatar { width: 48px; height: 48px; }
 .footer__cobrand .cobrand__handle { font-size: 22px; font-weight: 600; color: #fff; letter-spacing: -0.02em; }
 .footer__cobrand .cobrand__plus { width: 28px; height: 28px; font-size: 16px; }
 .footer__cobrand .cobrand__brand { font-size: 22px; color: #fff; font-weight: 600; letter-spacing: -0.02em; }
-.footer__cobrand .cobrand__brand .logo { width: 28px; height: 28px; }
+.footer__cobrand .cobrand__brand .logo-img { height: 28px; }
 
 .footer__tagline {
   font-size: clamp(22px, 2vw, 28px);
