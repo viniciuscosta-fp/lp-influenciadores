@@ -1,0 +1,416 @@
+FLUENCYPASS
+LP Parceria com Influenciadores
+Documento de copy + direcionamento de design
+Versões: Maria Clara (Greed · Business) + Matheus (Fear · Tech)
+Estrutura base: LP G4 Educação × Fluencypass
+
+1. Visão geral
+Este documento contém duas LPs de parceria com influenciadores, prontas pra produção. Ambas seguem a mesma estrutura visual da LP G4 Educação × Fluencypass — só mudam textos e eixo emocional.
+As duas versões
+Cada LP foi calibrada pra um eixo emocional específico baseado no perfil da audiência do influenciador:
+VERSÃO GREED — Maria Clara (@mariaclara): tom aspiracional. Audiência quer trabalhar remoto pra fora, ganhar em outra moeda. Bônus exclusivo: Inglês para Business.
+VERSÃO FEAR — Matheus (@matheusdev): tom direto/choque de realidade. Audiência de devs que sabem que estão perdendo oportunidades. Bônus exclusivo: Inglês para Tech.
+Princípio editorial
+Cada LP escolhe UM eixo emocional e mantém ele do começo ao fim. Greed e Fear não convivem na mesma página — misturar os dois quebra o fluxo emocional e derruba conversão.
+GREED puxa o leitor PARA a vida que ele quer ter (aspiração).
+FEAR confronta o leitor com o custo presente de não agir (consciência de perda).
+Estrutura comum às duas LPs
+11 blocos na mesma ordem. Apenas 4 blocos têm copy diferente entre Greed e Fear: Hero (1), A Virada (2), Bloco emocional (3) e Frase-âncora. Os 7 blocos restantes são idênticos.
+
+2. Direcionamento de design
+Referência principal: LP G4 Educação × Fluencypass. As novas LPs devem reaproveitar o mesmo sistema visual, com pequenos ajustes pontuais.
+Paleta
+Preto / escuro nos blocos de impacto: Hero, A Virada, Bloco emocional (3), Kit de Bônus, Tabela comparativa, Rodapé.
+Branco / off-white nos blocos informativos: Planos, Método, Depoimentos, FAQ.
+Coral / rosa (#FF5A5F aprox.) como cor de destaque: CTAs, acentos, badges "BÔNUS EXCLUSIVO".
+Verde para checkmarks de features dos planos (igual G4).
+Importante: NÃO mudar a paleta por influenciador. Mantém Fluencypass como âncora visual, evita que a LP pareça "página do influenciador X".
+Tipografia
+Mesma família tipográfica da LP G4.
+Headlines bem grandes nos blocos escuros (Hero, Virada, Bloco 3) — peso visual igual ao G4.
+Corpo de texto generoso, com bom espaçamento entre linhas (1.5).
+Co-branding (eyebrow)
+Logos lado a lado, separados por "+", no topo do Hero e do Rodapé:
+@mariaclara + Fluencypass (versão Maria)
+@matheusdev + Fluencypass (versão Matheus)
+Como o influenciador é pessoa física, usar o handle (@) em vez de "logo" — pode ser texto estilizado em fonte forte, ou foto circular do rosto + handle. Manter o + e o logo Fluencypass do lado direito, igual à versão G4.
+Imagens por bloco
+Bloco 1 — Hero: Foto principal do influenciador em ambiente que remeta à aspiração da audiência. Maria: contexto internacional/europeu, skyline ou ambiente profissional cosmopolita. Matheus: contexto dev/home office sóbrio, sem aspiração visual (ele é prova viva do leitor). Tratamento cinemático escuro, igual o G4 (3 caras + NY).
+Bloco 2 — A Virada: Foto secundária do influenciador, vertical (4:5), em contexto profissional diferente do hero. Sem tratamento dramático — visual de "reportagem", reforçando autenticidade.
+Bloco 3 — Bloco emocional: 3 cards lado a lado com ícones (sem fotos). Mesmo layout dos cards de dor da LP G4. Fundo preto.
+Bloco 4 — Planos: Reaproveitar 100% o design dos 3 cards G4 (Starter / Professional / Premium). Card central destacado em coral.
+Bloco 5 — Kit de Bônus: Mesmo grid 2x2 do G4 (Curso bônus + Dobro de aulas + Masterclass). Fundo preto. Trocar o nome/descrição do bônus 1 e da masterclass por influenciador. Manter foto do Diogo na masterclass.
+Bloco 6 — Depoimento do influenciador: Player de vídeo com thumbnail customizada (frame do próprio vídeo com rosto bem visível). NÃO usar a peça "você já começou a assistir" da VSL G4 — aqui é depoimento curto, layout enxuto.
+Bloco 7 — Método: Reaproveitar 100% a composição visual da LP G4 (plataforma + conversação + intercâmbio).
+Bloco 8 — Depoimentos de alunos: Reaproveitar 100% os 3 vídeos do G4 (Heloisa Pestana, Rafael, Hugo Rosa).
+Bloco 9 — Tabela comparativa: Reaproveitar 100% o design da tabela G4. Fundo preto.
+Bloco 10 — FAQ: Accordion vertical idêntico ao G4.
+Bloco 11 — Rodapé: Mesmo layout co-branded do G4, trocando o logo do G4 pelo handle do influenciador.
+Estrutura de hero (igual G4)
+Split desktop: copy à esquerda, foto à direita (composição cinemática).
+Mobile: stack vertical (copy primeiro, foto abaixo).
+Eyebrow com co-branding no topo.
+CTA primário coral, mesmo formato dos demais.
+CTAs
+Total de 4 CTAs distribuídos pela página (Hero, Bloco 3, Bloco 5/bônus, Bloco 9/comparativo) — mesmo padrão do G4.
+Texto padrão: "Ver planos exclusivos →"
+Estilo: botão coral arredondado, ícone de seta, igual G4.
+Espaçamento e ritmo
+Padding vertical generoso entre blocos: 80-120px no desktop, 48-64px no mobile.
+Alternância de fundos (escuro → claro → escuro) cria respiro visual e reforça hierarquia.
+Largura máxima de coluna em blocos de texto: ~720px para legibilidade.
+
+3. LP Maria Clara — Versão Greed (Inglês para Business)
+Eixo emocional: Greed (aspiracional). Bônus exclusivo: Curso Intensivo de Inglês para Business.
+Bloco 1 — Hero co-branded
+Visual: Fundo escuro/cinemático. Foto da Maria em ambiente internacional (Paris, ambiente profissional cosmopolita, ou estilo "escritório global"). Split desktop: copy à esquerda, foto à direita.
+Eyebrow
+🤝 @mariaclara + Fluencypass
+Headline (H1)
+O inglês que abre as portas pras vagas que pagam em dólar e euro.
+Subtítulo
+Parceria oficial com a Maria Clara. Condições especiais pra quem quer trabalhar remoto, ganhar em outra moeda e dar o salto pra carreira internacional.
+Tagline destacada
+"Usado por brasileiros que conseguiram vagas em multinacionais — começando do Brasil."
+Selo
+🔒 Exclusivo para seguidores da Maria Clara
+CTA primário
+Ver planos exclusivos →
+Bloco 2 — A Virada (história da Maria)
+Visual: Fundo claro/off-white. Texto em coluna estreita ~640px à esquerda (diagramado como artigo de revista). Foto vertical 4:5 da Maria à direita, em contexto profissional diferente do hero. Assinatura ao final.
+H2
+Como o inglês me levou do Brasil pra França
+Corpo (primeira pessoa, assinado pela Maria)
+"Meu segundo trabalho foi numa multinacional sueca. Time LATAM, remoto, eu ainda no Brasil. Consegui a vaga porque falava inglês — só por isso.
+Hoje moro na França, trabalho com vendas de exportação e faço mestrado internacional. Tudo em inglês.
+Por isso fechei essa parceria: a Fluencypass é a primeira escola que combina aprender + praticar todos os dias + um módulo desenhado pra quem quer carreira internacional de verdade."
+Assinatura
+— Maria Clara
+Bloco 3 — A vida que o inglês destrava
+Visual: Fundo preto. 3 cards horizontais com ícones grandes (sem fotos). Mesmo layout dos cards de dor do G4, mas com conteúdo aspiracional.
+H2
+O que o inglês desbloqueia pra quem está pronto
+Subtítulo
+Três realidades que estão ao alcance de quem domina o idioma de verdade.
+Card 1 — 🌍 Trabalhar de qualquer lugar pra empresas de fora
+Times remotos LATAM, vagas em multinacionais europeias e americanas contratando do Brasil. Posição CLT, benefícios e salário em outra moeda.
+Card 2 — 💼 Entrevistas internacionais com confiança
+Quando a entrevista é em inglês e você responde com naturalidade, a decisão deixa de ser "técnica vs idioma" e vira só técnica. Você joga em pé de igualdade com candidatos do mundo todo.
+Card 3 — ✈️ Carreira sem fronteiras
+Mestrado fora, transferência interna pra outro país, vagas que pedem viagens internacionais — tudo isso se abre quando o inglês deixa de ser barreira e vira ferramenta.
+Frase-âncora (após os cards)
+O inglês é o que separa sua carreira atual da carreira que você quer ter.
+Não deixe ele ser o motivo pelo qual você ainda não chegou lá.
+CTA
+Ver planos exclusivos →
+Bloco 4 — Planos exclusivos
+Visual: Reaproveitamento 100% do G4. Fundo claro. 3 cards lado a lado: Starter, Professional (destacado em coral), Premium. Mesmas features.
+Eyebrow
+Planos Exclusivos para Seguidores da Maria Clara
+H2
+Escolha o plano ideal pra sua virada de carreira
+Card 1 — Starter (42% OFF)
+Escola de inglês online que te leva do zero à fluência em tempo recorde. Estude onde quiser.
+Card 2 — Professional (47% OFF) — DESTAQUE
+Turbine a prática do seu inglês. Escola online + Aulas particulares + Conversação ilimitada.
+Card 3 — Premium (31% OFF)
+O ciclo completo da fluência: Escola online + Aula particular + Conversação ilimitada + Intercâmbio.
+Features de cada plano (manter idêntico G4)
+Risco zero: 7 dias para sua satisfação ou seu dinheiro de volta
+Escola online 24h do iniciante ao Pós Avançado
+1 a 4 testes de nível com IA durante a experiência
+11 níveis baseados no CEFR com certificado a cada nível
+Conversação (em grupo ou ilimitada conforme plano)
+Aulas particulares (conforme plano)
+Intercâmbio (Premium)
+Garantia de 12 meses (Professional e Premium)
+Acesso à Comunidade Fluencypass
+Suporte para dúvidas
+CTA em cada card
+DESBLOQUEAR OFERTA
+Bloco 5 — Kit Completo de Bônus
+Visual: Fundo preto. Grid 2x2 igual G4 (Bônus 1 e 2 à esquerda em cards menores, Masterclass à direita em card grande). Badges "BÔNUS EXCLUSIVO" em coral. Foto do Diogo Aguilar na masterclass.
+Eyebrow
+BÔNUS EXCLUSIVO:
+H2
+Kit Completo para Seguidores da Maria Clara
+Subtítulo
+Tudo que você precisa pra destravar o inglês e conquistar a vaga internacional.
+Bônus 1 — Curso Intensivo de Inglês para Business
+Domine o vocabulário, fluência e estratégias de comunicação para entrevistas internacionais, reuniões com times globais e negociações com empresas no exterior.
+Bônus 2 — Dobro de Aulas Particulares
+Você terá acesso ao dobro de aulas particulares, pra ter um acompanhamento mais exclusivo e personalizado com nossos professores.
+Bônus 3 — Masterclass Exclusiva: Como conquistar sua primeira vaga internacional
+Com Diogo Aguilar, Fundador e CEO Fluencypass.
+Aprenda o caminho prático que brasileiros estão usando pra entrar em multinacionais — começando do Brasil, em posições remotas com salário em outra moeda.
+Valor total
+Valor total de economia com os bônus:
+R$ 2.497
+Seu investimento: apenas o valor do plano escolhido
+CTA
+Ver planos exclusivos →
+Bloco 6 — Depoimento da Maria
+Visual: Fundo claro. Vídeo centralizado, largura máx ~720px. Pull quote em card cinza-claro com borda lateral coral logo abaixo. NÃO usar tratamento "você já começou a assistir" (esse é da VSL G4).
+H2
+Por que a Maria escolheu a Fluencypass
+Texto de apoio
+Em 1 minuto, a Maria conta por que essa parceria faz sentido pra realidade dos seguidores dela.
+[VÍDEO depoimento de 1-2 min — Maria Clara]
+Pull quote (abaixo do vídeo)
+"Fechei com a Fluencypass principalmente pelo módulo voltado pra negócios e por estar adaptado ao modelo remoto — o mais próximo da realidade dos meus seguidores."
+— Maria Clara · @mariaclara
+CTA secundário
+Quero assinar →
+Bloco 7 — Método Fluencypass
+Visual: Reaproveitamento 100% do G4. Composição visual com plataforma + conversação + intercâmbio. Lado esquerdo texto, lado direito ilustração.
+H2
+O único método do mundo com o ciclo completo para você falar inglês
+Subtítulo
+Desenvolvido pra quem precisa destravar o inglês de forma rápida e prática.
+3 pilares
+Teoria
+Plataforma de inglês online, baseada no CEFR, com teste de nível, aulas teóricas e dinâmicas, quizzes, flashcards e materiais complementares.
+Prática
+Conversação em Grupos de até 6 alunos, intermediadas por um professor certificado, com temas variados. E aulas particulares com os temas personalizados.
+Imersão
+Experiência de imersão no Exterior para praticar o idioma e viver a melhor experiência da sua vida.
+Diferencial
+Cada aula é uma oportunidade de praticar situações reais que você enfrentará no seu dia a dia profissional.
+CTA
+Ver planos exclusivos →
+Bloco 8 — Depoimentos de alunos
+Visual: Reaproveitamento 100% do G4. 3 cards de vídeo lado a lado. Mesmos depoentes: Heloisa Pestana, Rafael, Hugo Rosa.
+H2
+O que dizem profissionais que confiaram na Fluencypass
+Heloisa Pestana — Inglês
+Rafael Rodrigues — Inglês
+Hugo Rosa — Inglês
+Bloco 9 — Tabela comparativa
+Visual: Reaproveitamento 100% do G4. Fundo preto. Tabela 4 colunas (Fluencypass / Escola física / Escola online / Professor particular) com 9 linhas de benefícios.
+H2
+Por que profissionais escolhem a Fluencypass?
+Benefícios (mesmas linhas do G4)
+Ciclo completo de aprendizagem
+Aulas online com acesso 24/7
+Aulas particulares
+Conversação em grupo ilimitada
+Intercâmbio no exterior com suporte e assessoria
+Material didático grátis
+Tempo de deslocamento indo e voltando até a escola
+Módulos extras de inglês sem custo adicional
+Cancelamento sem multa
+CTA
+Ver planos exclusivos →
+Bloco 10 — FAQ
+Visual: Accordion vertical idêntico ao G4. Fundo claro. Largura máx ~720px, todas as perguntas fechadas por padrão.
+H2
+Ficou com alguma dúvida?
+❓ Como funciona a parceria com a Maria Clara?
+A Maria é parceira oficial da Fluencypass. Quem chega pela indicação dela ganha o curso completo + Curso Intensivo de Inglês para Business + condição especial — tudo aplicado automaticamente nesta página.
+❓ O bônus de Inglês para Business serve mesmo pra quem quer trabalhar fora?
+Sim. O curso é focado em entrevistas internacionais, reuniões com times globais, negociações com empresas no exterior e o vocabulário específico do dia a dia profissional internacional.
+❓ Funciona pra quem já tem nível intermediário mas trava em entrevistas internacionais?
+Sim. A plataforma faz teste de nível e te coloca na trilha certa. As aulas particulares e conversações são adaptadas ao seu nível atual e ao seu objetivo específico.
+❓ Quanto tempo leva pra conseguir minha primeira vaga internacional?
+Depende do seu ponto de partida, mas seguindo a rotina recomendada (60 min/dia) muitos alunos chegam à fluência funcional em torno de 12 meses. A partir daí, candidaturas internacionais ficam ao seu alcance.
+❓ Qual nível de inglês eu preciso ter pra começar?
+Nenhum. Você pode começar do zero — a plataforma faz um teste no início e te coloca na trilha certa.
+❓ Como funciona a garantia de 12 meses?
+Se você seguir o método recomendado (60 min/dia, 1 lição diária + conversação) e não evoluir de nível em 12 meses, a Fluencypass devolve o valor investido. Detalhes nos termos de uso.
+❓ Consigo estudar pelo celular?
+Sim. Plataforma 24/7 no celular, tablet ou computador.
+❓ Como são as aulas de conversação em grupo?
+Grupos de até 6 alunos do mesmo nível, 25 minutos, várias por dia, com professores certificados e temas variados.
+❓ Quem são os professores?
+Professores certificados, brasileiros e estrangeiros, com formação específica em ensino de inglês.
+❓ Quando e para onde posso fazer intercâmbio?
+Mais de 40 cidades pelo mundo, em até 3 anos a partir da contratação do Plano Premium.
+❓ Como eu vou saber que estou evoluindo?
+Você faz testes de nível periódicos baseados no CEFR (Quadro Comum Europeu) e recebe certificado a cada nível atingido.
+❓ A Fluencypass é segura?
+Sim. Empresa registrada (CNPJ 16.668.743/0001-74), com reputação RA1000 no Reclame Aqui.
+❓ Eu recebo certificado?
+Sim. A cada nível concluído, baseado no Quadro Comum Europeu (CEFR), reconhecido internacionalmente.
+❓ Como funciona o pagamento?
+Cartão de crédito em até 12x ou outros meios disponíveis no checkout.
+❓ Se eu não gostar, posso cancelar?
+Sim. Você tem 7 dias para teste sem risco, e cancelamento sem multa conforme termos de uso.
+Bloco 11 — Rodapé co-branded
+Visual: Fundo preto. Logos lado a lado (@mariaclara + Fluencypass). Tagline curta. Links institucionais minimalistas.
+Logos
+@mariaclara + Fluencypass
+Tagline
+"O inglês que profissionais brasileiros usam pra trabalhar no mundo todo."
+Linha institucional
+Fluencypass · CNPJ: 16.668.743/0001-74 · Política de privacidade · Termos de uso · Atendimento: +55 11 2189-0474
+
+4. LP Matheus — Versão Fear (Inglês para Tech)
+Eixo emocional: Fear (consciência de perda). Bônus exclusivo: Curso Intensivo de Inglês para Tech.
+Bloco 1 — Hero co-branded
+Visual: Fundo escuro. Foto do Matheus em ambiente dev/home office sóbrio — sem aspiração visual (ele representa o leitor agora, não o futuro). Pode incluir setup com 2 monitores, código desfocado ao fundo. Tratamento mais sério e direto que a versão Maria. Split desktop igual G4.
+Eyebrow
+🤝 @matheusdev + Fluencypass
+Headline (H1)
+Cada mês sem inglês é um mês de salário em dólar passando batido.
+Subtítulo
+Parceria oficial com o Matheus. Condições especiais pra quem já entendeu que inglês não é mais "diferencial" — é o que separa quem ganha em real de quem ganha em dólar.
+Tagline destacada
+"Pra devs que cansaram de ver vaga gringa passar e não estar preparado pra aplicar."
+Selo
+🔒 Exclusivo para seguidores do Matheus
+CTA primário
+Ver planos exclusivos →
+Bloco 2 — A Virada (história do Matheus)
+Visual: Fundo claro/off-white. Mesmo layout da Maria (texto à esquerda, foto vertical à direita). Foto do Matheus em ambiente de trabalho dev, expressão séria. Sem dramatização — visual de reportagem.
+H2
+O preço que eu paguei por demorar a aprender inglês
+Corpo (primeira pessoa, assinado pelo Matheus)
+"Eu sou engenheiro de software. Trabalho com inglês todos os dias — porque tudo na nossa área tá em inglês.
+Mas eu demorei pra começar a estudar de verdade. E o preço disso foi alto: perdi grandes oportunidades de carreira que não vão voltar. Tive que correr atrás depois, no susto, com a vaga já indo embora.
+Se eu pudesse falar com o Matheus de 5 anos atrás, eu diria uma coisa: comece agora. Não tem atalho, não tem hack. Mas o que tem é o método certo — e foi por isso que fechei essa parceria com a Fluencypass. Pra você não cometer o mesmo erro que eu."
+Assinatura
+— Matheus
+Bloco 3 — O custo de não agir agora
+Visual: Fundo preto. 3 cards horizontais com ícones (sem fotos). Mesmo layout dos cards de dor do G4.
+H2
+O que tá te custando enquanto você adia
+Subtítulo
+Três realidades que continuam acontecendo, mês após mês, pra quem ainda não dominou o inglês.
+Card 1 — 💸 Salário em real enquanto o mercado paga em dólar
+Empresas gringas estão contratando dev brasileiro pra trabalhar remoto agora, pagando 3 a 5 vezes mais que o mercado nacional. A única coisa entre você e essa folha de pagamento é uma entrevista em inglês.
+Card 2 — 📉 Vagas que passam sem você nem aplicar
+Toda semana você vê posição abrir no LinkedIn, lê "inglês fluente requerido" e fecha a aba. Não é falta de competência técnica que tá te tirando dessas vagas. É o filtro de idioma — e ele tá descartando você antes da sua primeira entrevista.
+Card 3 — ⏳ O custo composto do "vou começar depois"
+Cada ano que você adia é mais um ano de salário em real, mais um ano vendo colegas seus passarem à frente, mais um ano longe da vida que você sabe que poderia estar tendo. Não dá pra recuperar tempo perdido — só dá pra parar de perder mais.
+Frase-âncora (após os cards)
+Inglês não é mais "diferencial". É o que separa quem aplica de quem assiste.
+Quanto mais você adia, mais caro fica.
+CTA
+Ver planos exclusivos →
+Bloco 4 — Planos exclusivos
+Visual: Idêntico à versão Maria. Reaproveitamento 100% do G4.
+Eyebrow
+Planos Exclusivos para Seguidores do Matheus
+H2
+Escolha o plano pra destravar o inglês e parar de perder oportunidade
+Cards idênticos à versão Maria (Starter 42% / Professional 47% / Premium 31% OFF). Features iguais. CTA "DESBLOQUEAR OFERTA" em cada card.
+Bloco 5 — Kit Completo de Bônus
+Visual: Idêntico à versão Maria. Grid 2x2 G4. Trocar nome/descrição do Bônus 1 e da Masterclass.
+Eyebrow
+BÔNUS EXCLUSIVO:
+H2
+Kit Completo para Seguidores do Matheus
+Subtítulo
+Tudo que você precisa pra destravar o inglês de tech e parar de ver vaga gringa passar.
+Bônus 1 — Curso Intensivo de Inglês para Tech
+Vocabulário, expressões e simulações reais de daily, code review, entrevista técnica em inglês, pair programming e comunicação com times globais.
+Bônus 2 — Dobro de Aulas Particulares
+Você terá acesso ao dobro de aulas particulares, pra ter um acompanhamento mais exclusivo e personalizado com nossos professores.
+Bônus 3 — Masterclass Exclusiva: Como destravar inglês pra conseguir a primeira vaga internacional
+Com Diogo Aguilar, Fundador e CEO Fluencypass.
+O caminho prático que devs brasileiros estão usando pra entrar em times internacionais — saindo do salário em real pro salário em dólar/euro.
+Valor total
+Valor total de economia com os bônus:
+R$ 2.497
+Seu investimento: apenas o valor do plano escolhido
+CTA
+Ver planos exclusivos →
+Bloco 6 — Depoimento do Matheus
+Visual: Mesmo layout da Maria. Vídeo centralizado + pull quote em card.
+H2
+Por que o Matheus escolheu a Fluencypass
+Texto de apoio
+Em 1 minuto, o Matheus conta por que essa parceria faz sentido pra quem é dev e quer trabalhar lá fora.
+[VÍDEO depoimento de 1-2 min — Matheus]
+Pull quote
+"Se você é dev e ainda não fala inglês, tu tá deixando dinheiro na mesa todo mês. Eu sei porque deixei por anos."
+— Matheus · @matheusdev
+Briefing pra gravação: Pedir ao Matheus pra dizer algo nessa linha no vídeo. Se o pull quote final for diferente, ajustar aqui depois do material gravado.
+CTA secundário
+Quero assinar →
+Bloco 7 — Método Fluencypass
+Visual: Idêntico à versão Maria. Reaproveitamento 100% do G4.
+H2
+O único método do mundo com o ciclo completo para você falar inglês
+Subtítulo
+Desenvolvido pra quem precisa destravar o inglês de forma rápida e prática.
+Os 3 pilares (Teoria · Prática · Imersão) são idênticos à versão Maria.
+Diferencial
+Cada aula é uma oportunidade de praticar situações reais do dia a dia — daily, code review, entrevista técnica.
+CTA
+Ver planos exclusivos →
+Bloco 8 — Depoimentos de alunos
+Visual: Idêntico à versão Maria. Reaproveitamento 100% do G4.
+H2
+O que dizem profissionais que confiaram na Fluencypass
+3 vídeos: Heloisa Pestana, Rafael, Hugo Rosa. Mesmos do G4.
+Bloco 9 — Tabela comparativa
+Visual: Idêntico à versão Maria. Reaproveitamento 100% do G4.
+H2
+Por que devs escolhem a Fluencypass?
+Mesmas 9 linhas de benefícios da versão Maria.
+CTA
+Ver planos exclusivos →
+Bloco 10 — FAQ
+Visual: Idêntico à versão Maria. Accordion vertical.
+H2
+Ficou com alguma dúvida?
+❓ Como funciona a parceria com o Matheus?
+O Matheus é parceiro oficial da Fluencypass. Quem chega pela indicação dele ganha o curso completo + Curso Intensivo de Inglês para Tech + condição especial — tudo aplicado automaticamente nesta página.
+❓ O Inglês para Tech serve mesmo pra quem quer trabalhar remoto pra fora?
+Sim. O curso é focado em daily, code review, entrevista técnica em inglês, pair programming e comunicação com times globais — exatamente as situações reais de quem trabalha (ou quer trabalhar) em time internacional.
+❓ Funciona pra quem já tem nível intermediário mas trava na hora de falar?
+Sim. A plataforma faz teste de nível e te coloca na trilha certa. Conversação e aulas particulares são adaptadas ao seu nível e ao seu objetivo (vaga internacional, entrevista, daily).
+❓ Quanto tempo leva pra eu conseguir uma vaga internacional?
+Depende do seu nível atual e da sua dedicação. Seguindo a rotina recomendada (60 min/dia), muitos alunos chegam à fluência funcional em torno de 12 meses, e a partir daí ficam aptos a aplicar pra vagas internacionais com confiança.
+❓ Qual nível de inglês eu preciso ter pra começar?
+Nenhum. Você pode começar do zero — a plataforma faz um teste no início e te coloca na trilha certa.
+❓ Como funciona a garantia de 12 meses?
+Se você seguir o método recomendado (60 min/dia, 1 lição diária + conversação) e não evoluir de nível em 12 meses, a Fluencypass devolve o valor investido. Detalhes nos termos de uso.
+❓ Consigo estudar pelo celular?
+Sim. Plataforma 24/7 no celular, tablet ou computador.
+❓ Como são as aulas de conversação em grupo?
+Grupos de até 6 alunos do mesmo nível, 25 minutos, várias por dia, com professores certificados e temas variados.
+❓ Quem são os professores?
+Professores certificados, brasileiros e estrangeiros, com formação específica em ensino de inglês.
+❓ Quando e para onde posso fazer intercâmbio?
+Mais de 40 cidades pelo mundo, em até 3 anos a partir da contratação do Plano Premium.
+❓ Como eu vou saber que estou evoluindo?
+Você faz testes de nível periódicos baseados no CEFR e recebe certificado a cada nível atingido.
+❓ A Fluencypass é segura?
+Sim. Empresa registrada (CNPJ 16.668.743/0001-74), com reputação RA1000 no Reclame Aqui.
+❓ Eu recebo certificado?
+Sim. A cada nível concluído, baseado no Quadro Comum Europeu (CEFR), reconhecido internacionalmente.
+❓ Como funciona o pagamento?
+Cartão de crédito em até 12x ou outros meios disponíveis no checkout.
+❓ Se eu não gostar, posso cancelar?
+Sim. Você tem 7 dias para teste sem risco, e cancelamento sem multa conforme termos de uso.
+Bloco 11 — Rodapé co-branded
+Visual: Idêntico à versão Maria. Trocar handle.
+Logos
+@matheusdev + Fluencypass
+Tagline
+"O inglês que devs brasileiros usam pra trabalhar no mundo todo."
+Linha institucional
+Fluencypass · CNPJ: 16.668.743/0001-74 · Política de privacidade · Termos de uso · Atendimento: +55 11 2189-0474
+
+5. Checklist de produção
+Assets necessários por LP
+Foto principal do influenciador (hero) — tratamento cinemático escuro
+Foto secundária (bloco A Virada) — contexto profissional, formato vertical 4:5
+Vídeo depoimento curto (1-2 min) com pull quote já validada
+Thumbnail customizada do vídeo (frame com rosto bem visível)
+Handle confirmado para co-branding (@nome)
+Pendências comerciais
+Confirmar % de desconto nos 3 planos (versão atual G4: 42% / 47% / 31%)
+Confirmar valor total dos bônus (versão atual G4: R$ 2.497)
+Validar disponibilidade do Diogo Aguilar pra masterclass co-hosted (ou ajustar formato)
+Validações antes de publicar
+Maria e Matheus revisam e aprovam os blocos em primeira pessoa (Bloco 2 e pull quote)
+Jurídico valida termos da garantia de 12 meses e política de cancelamento
+UTM tags configuradas por LP pra atribuição de conversão por influenciador
+Pixel/eventos de conversão configurados (form submit, CTA de plano)
+Pós-produção
+Definir prazo de vigência da LP (campanha contínua vs janela específica)
+Plano de mídia paga vs orgânico do influenciador
+Dashboard de acompanhamento de MQL por LP/influenciador

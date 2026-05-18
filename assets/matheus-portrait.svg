@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c1c22"></stop>
+      <stop offset="1" stop-color="#0a0a0c"></stop>
+    </linearGradient>
+    <radialGradient id="g2" cx="0.5" cy="0.3" r="0.6">
+      <stop offset="0" stop-color="#252b37" stop-opacity="0.8"></stop>
+      <stop offset="1" stop-color="transparent"></stop>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#g1)"></rect>
+  <rect width="800" height="1000" fill="url(#g2)"></rect>
+
+  
+  <g font-family="ui-monospace, monospace" font-size="14" fill="#717680" opacity="0.12">
+    <text x="40" y="80">const wage = await job.salary();</text>
+    <text x="40" y="110">if (lang !== &#39;en&#39;) return null;</text>
+    <text x="40" y="140">// 3-5x in USD</text>
+    <text x="40" y="170">apply({ remote: true });</text>
+    <text x="500" y="900">// EOF</text>
+    <text x="500" y="930">// matheusdev</text>
+  </g>
+
+  
+  <g transform="translate(400, 480)">
+    
+    <path d="M -260 520 C -260 350, -160 270, 0 270 C 160 270, 260 350, 260 520 L 260 520 Z" fill="#252b37"></path>
+    
+    <path d="M -80 270 C -80 320, -40 360, 0 360 C 40 360, 80 320, 80 270 Z" fill="#0d0d12"></path>
+    
+    <rect x="-40" y="180" width="80" height="100" fill="#414651"></rect>
+    
+    <ellipse cx="0" cy="100" rx="120" ry="135" fill="#414651"></ellipse>
+    
+    <path d="M -120 80 C -120 -20, -60 -50, 0 -50 C 60 -50, 120 -20, 120 80 L 120 50 C 120 0, 60 -30, 0 -30 C -60 -30, -120 0, -120 50 Z" fill="#252b37"></path>
+    
+    <ellipse cx="60" cy="100" rx="80" ry="120" fill="rgba(255,255,255,0.04)"></ellipse>
+  </g>
+
+  
+  <rect x="0" y="700" width="800" height="300" fill="url(#g3)"></rect>
+  <defs>
+    <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="transparent"></stop>
+      <stop offset="1" stop-color="#000" stop-opacity="0.6"></stop>
+    </linearGradient>
+  </defs>
+</svg>
