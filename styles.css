@@ -61,9 +61,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .eyebrow .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--coral); }
 
 .aviso-rolamento {
-  font-size: 12px; font-weight: 400; letter-spacing: 0.1em;
-  justify-self: center;
+  display: none;
+  font-size: 12px; font-weight: 400; letter-spacing: 0.12em;
   text-transform: lowercase; line-height: 1;
+  text-align: center;
+  color: var(--gray-400);
+  margin: 0 0 20px;
+}
+@media (max-width: 980px) {
+  .aviso-rolamento { display: block; }
 }
 
 
