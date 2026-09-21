@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "FluencyPass Influencers"
+description = "Landing pages for FluencyPass influencer partnerships, with personalized campaign content and a lead form for prospective students."
+version = "1.0.0"
+id = "artifacts/fluencypass-influencers"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22882
+
+[services.development]
+run = "pnpm --filter @workspace/fluencypass-influencers run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/fluencypass-influencers", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/fluencypass-influencers/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22882"
+BASE_PATH = "/"
