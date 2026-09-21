@@ -11,6 +11,50 @@ env = { "CI" = "true" }
 [workflows]
 runButton = "Project"
 
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "API Server"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Influencers Frontend"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Mockup Sandbox"
+
+[[workflows.workflow]]
+name = "API Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd artifacts/api-server && PORT=5000 pnpm run dev"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Influencers Frontend"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd artifacts/fluencypass-influencers && PORT=5001 BASE_PATH=/ pnpm run dev"
+waitForPort = 5001
+
+[[workflows.workflow]]
+name = "Mockup Sandbox"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd artifacts/mockup-sandbox && PORT=5002 BASE_PATH=/ pnpm run dev"
+waitForPort = 5002
+
 [agent]
 stack = "PNPM_WORKSPACE"
 expertMode = true
