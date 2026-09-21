@@ -1,0 +1,166 @@
+/* ============================================
+ * Cycle Design System — Colors + Type tokens
+ * Source: Cycle-Design-Shadcn/src/app/globals.css (v1.5.1)
+ * ============================================ */
+
+/* Fonts: Geist (local package). Fallback to Google Fonts CDN. */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap');
+
+:root {
+  /* --- Primitive color scale (Cycle gray, based on adapted Tailwind) --- */
+  --base-white: #FFFFFF;
+  --base-black: #000000;
+  --gray-50:  #FAFAFA;
+  --gray-100: #F5F5F5;
+  --gray-200: #E9EAEB;
+  --gray-300: #D5D7DA;
+  --gray-400: #A4A7AE;
+  --gray-500: #717680;
+  --gray-600: #535862;
+  --gray-700: #414651;
+  --gray-800: #252B37;
+  --gray-900: #181D27;
+  --gray-950: #0D0D12;
+
+  /* --- Semantic tokens (Neutral / Light) --- */
+  --background: var(--base-white);
+  --foreground: var(--gray-950);
+  --card: var(--base-white);
+  --card-foreground: var(--gray-950);
+  --popover: var(--base-white);
+  --popover-foreground: var(--gray-950);
+  --muted: var(--gray-50);
+  --muted-foreground: var(--gray-600);
+  --accent: var(--gray-100);
+  --accent-foreground: var(--gray-900);
+  --primary: var(--gray-950);
+  --primary-foreground: var(--gray-100);
+  --secondary: var(--gray-50);
+  --secondary-foreground: var(--gray-900);
+  --border: var(--gray-300);
+  --input: var(--gray-200);
+  --ring: var(--gray-500);
+  --destructive: #B32020;
+  --destructive-foreground: var(--base-white);
+
+  /* Charts */
+  --chart-1: #D45558;  /* brand rose */
+  --chart-2: #1A5FE0;  /* class blue */
+  --chart-3: #00C234;  /* group green */
+  --chart-4: #D48E00;  /* warning amber */
+  --chart-5: #7D0DD4;  /* impulse purple */
+
+  /* Alpha overlays */
+  --alpha-backdrop: rgba(0, 0, 0, 0.6);
+  --alpha-overlay:  rgba(255, 255, 255, 0.6);
+
+  /* Radius */
+  --radius: 0.625rem;                    /* 10px = lg (default) */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Shadows — light (cycle-shadow-*) */
+  --shadow-xs: 0 1px 2px 0 rgba(0,0,0,.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0,0,0,.08), 0 1px 2px -1px rgba(0,0,0,.08);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,.08), 0 2px 4px -2px rgba(0,0,0,.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.08), 0 4px 6px -4px rgba(0,0,0,.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,.08), 0 8px 10px -6px rgba(0,0,0,.05);
+
+  /* Fonts */
+  --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+}
+
+/* --- Dark mode (Neutral) --- */
+.dark {
+  --background: var(--base-black);
+  --foreground: var(--gray-50);
+  --card: var(--gray-950);
+  --card-foreground: var(--gray-50);
+  --popover: var(--gray-950);
+  --popover-foreground: var(--gray-50);
+  --muted: var(--gray-950);
+  --muted-foreground: var(--gray-400);
+  --accent: var(--gray-800);
+  --accent-foreground: var(--gray-50);
+  --primary: var(--base-white);
+  --primary-foreground: var(--gray-900);
+  --secondary: var(--gray-900);
+  --secondary-foreground: var(--gray-200);
+  --border: var(--gray-700);
+  --input: var(--gray-800);
+  --ring: var(--gray-400);
+  --destructive: #D42B2B;
+  --destructive-foreground: var(--gray-50);
+
+  --chart-1: #ED6A6D;
+  --chart-2: #2E74FF;
+  --chart-3: #00E73E;
+  --chart-4: #F5A800;
+  --chart-5: #9810FA;
+
+  --shadow-xs: 0 1px 2px 0 rgba(0,0,0,.40), 0 0 0 1px rgba(255,255,255,.03);
+  --shadow-sm: 0 1px 3px 0 rgba(0,0,0,.50), 0 0 0 1px rgba(255,255,255,.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,.50), 0 0 0 1px rgba(255,255,255,.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.60), 0 0 0 1px rgba(255,255,255,.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,.60), 0 0 0 1px rgba(255,255,255,.06);
+}
+
+/* ============================================
+ * THEME VARIATIONS (.theme-*) — Light Mode
+ * Apply to any component or container to swap the semantic palette.
+ * ============================================ */
+.theme-brand    { --background:#FFE8E8; --foreground:#D45558; --card:#FFE8E8; --card-foreground:#D45558; --popover:#FFE8E8; --popover-foreground:#D45558; --muted:#FFD0D1; --muted-foreground:#8C2D2F; --accent:#FF8A8D; --accent-foreground:#6B1E20; --primary:#D45558; --primary-foreground:#FFFFFF; --secondary:#FFE8E8; --secondary-foreground:#0a0a0a; --border:#D45558; --input:#ED6A6D; --ring:#B33E41; }
+.theme-class    { --background:#E0EBFF; --foreground:#1A5FE0; --card:#E0EBFF; --card-foreground:#1A5FE0; --popover:#E0EBFF; --popover-foreground:#1A5FE0; --muted:#C2D6FF; --muted-foreground:#0A3590; --accent:#70A0FF; --accent-foreground:#062268; --primary:#1A5FE0; --primary-foreground:#FFFFFF; --secondary:#E0EBFF; --secondary-foreground:#0a0a0a; --border:#1A5FE0; --input:#2E74FF; --ring:#0F4BBC; }
+.theme-private  { --background:#FFEDE0; --foreground:#E56530; --card:#FFEDE0; --card-foreground:#E56530; --popover:#FFEDE0; --popover-foreground:#E56530; --muted:#FFD9C2; --muted-foreground:#993A16; --accent:#FFA570; --accent-foreground:#73270E; --primary:#E56530; --primary-foreground:#FFFFFF; --secondary:#FFEDE0; --secondary-foreground:#0a0a0a; --border:#E56530; --input:#FF8041; --ring:#BF4D20; }
+.theme-group    { --background:#E0FFE9; --foreground:#00C234; --card:#E0FFE9; --card-foreground:#00C234; --popover:#E0FFE9; --popover-foreground:#00C234; --muted:#B8FFD0; --muted-foreground:#00731E; --accent:#47FF8A; --accent-foreground:#004D14; --primary:#00C234; --primary-foreground:#0a0a0a; --secondary:#E0FFE9; --secondary-foreground:#0a0a0a; --border:#00C234; --input:#00E73E; --ring:#009929; }
+.theme-impulse  { --background:#F7E0FF; --foreground:#7D0DD4; --card:#F7E0FF; --card-foreground:#7D0DD4; --popover:#F7E0FF; --popover-foreground:#7D0DD4; --muted:#EFC2FF; --muted-foreground:#48077C; --accent:#D070FF; --accent-foreground:#48077C; --primary:#7D0DD4; --primary-foreground:#FFFFFF; --secondary:#F7E0FF; --secondary-foreground:#0a0a0a; --border:#7D0DD4; --input:#9810FA; --ring:#6209A8; }
+.theme-positive { --background:#E0FAF0; --foreground:#098A5E; --card:#E0FAF0; --card-foreground:#098A5E; --popover:#E0FAF0; --popover-foreground:#098A5E; --muted:#B8F2D9; --muted-foreground:#05523A; --accent:#47D99E; --accent-foreground:#033526; --primary:#098A5E; --primary-foreground:#FFFFFF; --secondary:#E0FAF0; --secondary-foreground:#0a0a0a; --border:#098A5E; --input:#0BA370; --ring:#07704C; }
+.theme-warning  { --background:#FFF5D9; --foreground:#D48E00; --card:#FFF5D9; --card-foreground:#D48E00; --popover:#FFF5D9; --popover-foreground:#D48E00; --muted:#FEEAB0; --muted-foreground:#7D5400; --accent:#FECF50; --accent-foreground:#523800; --primary:#D48E00; --primary-foreground:#FFFFFF; --secondary:#FFF5D9; --secondary-foreground:#0a0a0a; --border:#D48E00; --input:#F5A800; --ring:#AA7200; }
+.theme-critical { --background:#FFE8E8; --foreground:#B32020; --card:#FFE8E8; --card-foreground:#B32020; --popover:#FFE8E8; --popover-foreground:#B32020; --muted:#FFD0D0; --muted-foreground:#6B1010; --accent:#FF8585; --accent-foreground:#470A0A; --primary:#B32020; --primary-foreground:#FFFFFF; --secondary:#FFE8E8; --secondary-foreground:#0a0a0a; --border:#B32020; --input:#D42B2B; --ring:#8F1717; }
+
+/* ============================================
+ * TYPOGRAPHY — Composite styles from Figma
+ * Apply as utility class.
+ * ============================================ */
+body { font-family: var(--font-sans); color: var(--foreground); background: var(--background); }
+
+/* Body */
+.body-xs { font-size: .625rem; font-weight: 400; line-height: 1rem; letter-spacing: 0; }
+.body-sm { font-size: .75rem;  font-weight: 400; line-height: 1.125rem; letter-spacing: 0; }
+.body-md { font-size: .875rem; font-weight: 400; line-height: 1.25rem; letter-spacing: 0; }
+.body-lg { font-size: 1rem;    font-weight: 400; line-height: 1.5rem; letter-spacing: 0; }
+
+/* Heading */
+.heading-xs  { font-size: .875rem; font-weight: 600; line-height: 1.25rem;  letter-spacing: -.025em; }
+.heading-sm  { font-size: 1rem;    font-weight: 600; line-height: 1.5rem;   letter-spacing: -.025em; }
+.heading-md  { font-size: 1.125rem;font-weight: 600; line-height: 1.75rem;  letter-spacing: -.025em; }
+.heading-lg  { font-size: 1.25rem; font-weight: 600; line-height: 1.875rem; letter-spacing: -.025em; }
+.heading-xl  { font-size: 1.5rem;  font-weight: 600; line-height: 2rem;     letter-spacing: -.025em; }
+.heading-2xl { font-size: 2rem;    font-weight: 700; line-height: 2.5rem;   letter-spacing: -.025em; }
+.heading-3xl { font-size: 2.5rem;  font-weight: 700; line-height: 3rem;     letter-spacing: -.025em; }
+.heading-4xl { font-size: 3rem;    font-weight: 700; line-height: 3.75rem;  letter-spacing: -.05em;  }
+
+/* Display */
+.display-md       { font-size: 4rem;   font-weight: 700; line-height: 5.125rem; letter-spacing: -.05em; }
+.display-md-light { font-size: 4rem;   font-weight: 300; line-height: 5.125rem; letter-spacing: -.05em; }
+.display-lg       { font-size: 4.5rem; font-weight: 700; line-height: 5.625rem; letter-spacing: -.05em; }
+.display-lg-light { font-size: 4.5rem; font-weight: 300; line-height: 5.625rem; letter-spacing: -.05em; }
+
+/* Button */
+.button-sm { font-size: .75rem;  font-weight: 500; line-height: .75rem; }
+.button-md { font-size: .875rem; font-weight: 500; line-height: .875rem; }
+.button-lg { font-size: 1rem;    font-weight: 500; line-height: 1rem; }
+
+/* UI */
+.ui-label    { font-size: .875rem; font-weight: 500; line-height: .875rem; }
+.ui-caption  { font-size: .75rem;  font-weight: 400; line-height: 1rem; }
+.ui-overline { font-size: .75rem;  font-weight: 500; line-height: 1rem; letter-spacing: .025em; text-transform: uppercase; }
+
+/* --- Icon sizes (CycleIcon tokens) --- */
+/* 2xs:12/1  xs:16/1.2  sm:24/1.5  md:32/1.8  lg:40/2.1  xl:48/2.4 */
+
+/* --- Spacing scale (Tailwind default — never use arbitrary) --- */
+/* 1=4 2=8 3=12 4=16 5=20 6=24 8=32 10=40 12=48 16=64 20=80 */
