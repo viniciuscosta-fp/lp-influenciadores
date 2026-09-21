@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.env
+.env.local
+.DS_Store
+
+# Material bruto dos influenciadores: respostas de formulário com dado pessoal
+# (nomes, handles, histórias de carreira, links do Drive). Fica fora do git por
+# LGPD — é insumo de copy, não código.
+/influencers/
