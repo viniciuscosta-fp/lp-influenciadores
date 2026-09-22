@@ -45,8 +45,8 @@ export const bianeuhauser: InfluencerLP = {
     photo: '/assets/placeholder-bianeuhauser-hero.svg',
     photoAlt: 'Bianca',
     photoTag: {
-      loc: '[CIDADE] · Hoje',
-      text: 'Bianca — [CARGO] em uma das Big Four.',
+      loc: 'Hoje',
+      text: '@bianeuhauser · Gerente de CS',
     },
   },
 
@@ -81,7 +81,7 @@ export const bianeuhauser: InfluencerLP = {
         </p>
       </>
     ),
-    signatureMeta: '@bianeuhauser · [CARGO], uma das Big Four',
+    signatureMeta: '@bianeuhauser · Gerente de CS',
     photo: '/assets/placeholder-bianeuhauser-virada.svg',
     photoAlt: 'Bianca',
     cornerTag: 'Bastidores',

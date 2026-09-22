@@ -114,7 +114,7 @@ export const homeofficing: InfluencerLP = {
   },
 
   bonus: {
-    h2: 'Kit completo para seguidores da Maria Clara',
+    h2: 'Benefícios exclusivos para seguidores da Maria Clara',
     lead: 'Tudo que você precisa para destravar o inglês e conquistar a vaga internacional.',
     primary: {
       icon: 'briefcase',

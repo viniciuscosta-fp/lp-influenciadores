@@ -27,7 +27,7 @@ export type Plan = {
   features: PlanFeature[]
 }
 
-/** `bonusModule` entra na feature "Kit completo de bônus + …". */
+/** `bonusModule` entra na feature "Bônus completo + …". */
 export function getPlans(bonusModule: string, tone: Tone): Plan[] {
   const pra = tone === 'coloquial' ? 'pra' : 'para'
   return [
@@ -67,7 +67,7 @@ export function getPlans(bonusModule: string, tone: Tone): Plan[] {
         { text: '2 a 4 testes de nível com IA' },
         { text: 'Garantia de 12 meses de evolução' },
         { text: 'Intercâmbio no exterior', dim: true },
-        { text: `Kit completo de bônus + ${bonusModule}` },
+        { text: `Bônus completo + ${bonusModule}` },
         { text: '7 dias de risco zero' },
       ],
     },
@@ -86,7 +86,7 @@ export function getPlans(bonusModule: string, tone: Tone): Plan[] {
         { text: `Até 3 anos ${pra} usar o intercâmbio` },
         { text: 'Garantia de 12 meses de evolução' },
         { text: '4 testes de nível com IA' },
-        { text: `Kit completo de bônus + ${bonusModule}` },
+        { text: `Bônus completo + ${bonusModule}` },
         { text: '7 dias de risco zero' },
       ],
     },

@@ -112,7 +112,7 @@ export const matheusasg09: InfluencerLP = {
   },
 
   bonus: {
-    h2: 'Kit completo para seguidores do @matheusasg09',
+    h2: 'Benefícios exclusivos para seguidores do @matheusasg09',
     lead: 'Tudo que você precisa pra destravar o inglês de tech e parar de ver vaga gringa passar.',
     primary: {
       icon: 'code',

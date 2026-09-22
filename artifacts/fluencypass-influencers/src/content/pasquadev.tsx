@@ -21,7 +21,7 @@ export const pasquadev: InfluencerLP = {
   possessive: 'dele',
   tone: 'neutro',
   bonusModule: 'Inglês para Tech',
-  avatar: '/assets/placeholder-pasquadev-avatar.svg',
+  avatar: '/assets/pasquadev-avatar.webp',
 
   meta: {
     title: '@pasquadev × Fluencypass — Inglês para Tech',
@@ -126,7 +126,7 @@ export const pasquadev: InfluencerLP = {
   },
 
   bonus: {
-    h2: 'Kit completo para seguidores do @pasquadev',
+    h2: 'Benefícios exclusivos para seguidores do @pasquadev',
     lead: 'Tudo que você precisa para destravar o inglês falado do dia a dia técnico.',
     primary: {
       icon: 'code',
