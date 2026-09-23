@@ -12,12 +12,19 @@ import type { Plan } from '@/content/shared'
  * Diferenças em relação ao HTML antigo:
  *  - o POST vai para /api/lead (proxy), não direto para o n8n — a URL do webhook
  *    deixa de ficar no bundle do cliente e o envio para de falhar em silêncio;
- *  - o payload passa a identificar o influenciador e o plano clicado (B5).
+ *  - o payload segue o contrato do webhook de cadastro (docs/Webhook Cadastro
+ *    Marketing - Documentacao.md): as 14 chaves de raiz precisam existir, mesmo
+ *    vazias, senão o workflow rejeita com 400.
+ *
+ * O slug do influenciador viaja em `affiliateCode` — é o campo do contrato que
+ * carrega origem de parceria. `timing` e `motivacao` continuam sendo coletados
+ * no formulário, mas ainda não têm destino: entrariam em `extras`, que exige
+ * propriedade criada no HubSpot com o internal name exato.
  */
 
 type LeadGateValue = {
   unlocked: boolean
-  openFor: (planId: string) => void
+  openFor: () => void
 }
 
 const LeadGateContext = createContext<LeadGateValue | null>(null)
@@ -45,7 +52,7 @@ export function PlanCta({ plan }: { plan: Plan }) {
       className="btn btn--coral btn--block plan__cta"
       onClick={(e) => {
         e.preventDefault()
-        openFor(plan.id)
+        openFor()
       }}
     >
       Desbloquear oferta
@@ -70,15 +77,11 @@ export function LeadGateProvider({
   children: React.ReactNode
 }) {
   const [unlocked, setUnlocked] = useState(false)
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
   const [isOpen, setIsOpen] = useState(false)
   const [phone, setPhone] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
-  const openFor = useCallback((planId: string) => {
-    setSelectedPlan(planId)
-    setIsOpen(true)
-  }, [])
+  const openFor = useCallback(() => setIsOpen(true), [])
 
   const close = useCallback(() => setIsOpen(false), [])
 
@@ -109,19 +112,20 @@ export function LeadGateProvider({
 
     const params = new URLSearchParams(window.location.search)
     const payload = {
-      influencer,
-      plano: selectedPlan ?? '',
-      nome: get('firstName'),
-      idade: get('ageRange'),
-      celular: get('phone'),
       email: get('email'),
-      timing: get('timing'),
-      motivacao: get('motivation'),
+      firstName: get('firstName'),
+      celular: get('phone'),
+      idade: get('ageRange'),
+      channel: 'b2c_subscription',
+      plan: '',
       acquireUrl: window.location.href,
       utm_source: params.get('utm_source') ?? '',
       utm_medium: params.get('utm_medium') ?? '',
       utm_campaign: params.get('utm_campaign') ?? '',
+      utm_term: params.get('utm_term') ?? '',
       utm_content: params.get('utm_content') ?? '',
+      site_source_name: '',
+      affiliateCode: influencer,
     }
 
     setSubmitting(true)

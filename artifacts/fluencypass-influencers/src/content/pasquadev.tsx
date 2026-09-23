@@ -44,11 +44,11 @@ export const pasquadev: InfluencerLP = {
       { n: '12mo', l: 'garantia de evolução de nível' },
       { n: 'RA1000', l: 'reputação no Reclame Aqui' },
     ],
-    photo: '/assets/placeholder-pasquadev-hero.svg',
+    photo: '/assets/pasquadev-hero.webp',
     photoAlt: 'Vinicius Pasquantonio',
     photoTag: {
-      loc: '[CIDADE] · Hoje',
-      text: 'Vinicius Pasquantonio — [CARGO], trabalha remoto para uma empresa em Nova York.',
+      loc: 'Argentina · Hoje',
+      text: 'Vinicius Pasquantonio — Fullstack Developer',
     },
   },
 
@@ -82,8 +82,8 @@ export const pasquadev: InfluencerLP = {
         </p>
       </>
     ),
-    signatureMeta: '@pasquadev · [CARGO]',
-    photo: '/assets/placeholder-pasquadev-virada.svg',
+    signatureMeta: '@pasquadev · Fullstack Developer',
+    photo: '/assets/pasquadev-virada.webp',
     photoAlt: 'Vinicius Pasquantonio',
     cornerTag: 'Bastidores',
     caption: '"A vantagem que eu tive por acaso, dá para construir de propósito."',
