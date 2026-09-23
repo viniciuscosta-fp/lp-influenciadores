@@ -9,6 +9,7 @@ export const homeofficing: InfluencerLP = {
   possessive: 'dela',
   tone: 'neutro',
   bonusModule: 'Inglês para Business',
+  defaultCoupon: 'MARIA',
   avatar: '/assets/maria-portrait.jpeg',
 
   meta: {

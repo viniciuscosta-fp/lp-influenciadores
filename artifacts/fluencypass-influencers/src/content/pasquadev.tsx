@@ -21,6 +21,7 @@ export const pasquadev: InfluencerLP = {
   possessive: 'dele',
   tone: 'neutro',
   bonusModule: 'Inglês para Tech',
+  defaultCoupon: "PASQUA",
   avatar: '/assets/pasquadev-avatar.webp',
 
   meta: {

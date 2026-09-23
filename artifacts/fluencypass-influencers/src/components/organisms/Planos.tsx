@@ -1,11 +1,13 @@
 import { Icon } from '@/components/atoms/Icon'
 import { PlanCard } from '@/components/molecules/PlanCard'
+import { useLeadGate } from '@/components/organisms/LeadGate'
 import { getPlans } from '@/content/shared'
 import type { InfluencerLP } from '@/content/types'
 import { CenterFeaturedPlan } from './CenterFeaturedPlan'
 
 export function Planos({ lp }: { lp: InfluencerLP }) {
   const plans = getPlans(lp.bonusModule, lp.tone)
+  const { appliedCoupon } = useLeadGate()
   return (
     <section className="section plans" id="planos" data-screen-label="04 Planos">
       <div className="container">
@@ -20,13 +22,23 @@ export function Planos({ lp }: { lp: InfluencerLP }) {
         </div>
         <CenterFeaturedPlan />
 
-        <div className="plans__guarantee">
-          <Icon name="shield" size={20} strokeWidth={2} />
-          <span>
-            <strong style={{ color: 'var(--gray-950)' }}>Risco zero:</strong> 7 dias para sua
-            satisfação ou seu dinheiro de volta.
-          </span>
-        </div>
+        {appliedCoupon ? (
+          <div className="plans__guarantee plans__guarantee--coupon">
+            <Icon name="check" size={20} strokeWidth={2.4} />
+            <span>
+              <strong>Cupom {appliedCoupon} aplicado:</strong> sua oferta exclusiva está
+              liberada.
+            </span>
+          </div>
+        ) : (
+          <div className="plans__guarantee">
+            <Icon name="shield" size={20} strokeWidth={2} />
+            <span>
+              <strong style={{ color: 'var(--gray-950)' }}>Risco zero:</strong> 7 dias para sua
+              satisfação ou seu dinheiro de volta.
+            </span>
+          </div>
+        )}
       </div>
     </section>
   )

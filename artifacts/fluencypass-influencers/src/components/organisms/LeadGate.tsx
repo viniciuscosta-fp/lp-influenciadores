@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState, type FormEvent } from 'react'
 import { Icon } from '@/components/atoms/Icon'
+import { VALID_COUPONS } from '@/content'
 import type { Plan } from '@/content/shared'
 
 /**
@@ -20,16 +21,23 @@ import type { Plan } from '@/content/shared'
  * carrega origem de parceria. `timing` e `motivacao` continuam sendo coletados
  * no formulário, mas ainda não têm destino: entrariam em `extras`, que exige
  * propriedade criada no HubSpot com o internal name exato.
+ *
+ * Cupom: vem de ?cupom= ou do padrão da LP e é editável. A checagem contra
+ * VALID_COUPONS só troca o selo do campo — não bloqueia o envio nem muda a
+ * oferta (os bônus são definidos pela página). O cupom viaja em `utm_campaign`;
+ * o utm_campaign original continua preservado em `acquireUrl`.
  */
 
 type LeadGateValue = {
   unlocked: boolean
+  /** Cupom válido enviado no formulário; null antes do envio ou se inválido. */
+  appliedCoupon: string | null
   openFor: () => void
 }
 
 const LeadGateContext = createContext<LeadGateValue | null>(null)
 
-function useLeadGate(): LeadGateValue {
+export function useLeadGate(): LeadGateValue {
   const ctx = useContext(LeadGateContext)
   if (!ctx) throw new Error('useLeadGate precisa estar dentro de <LeadGateProvider>')
   return ctx
@@ -69,17 +77,27 @@ function formatPhone(raw: string): string {
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`
 }
 
+function normalizeCoupon(raw: string): string {
+  return raw.replace(/\s+/g, '').toUpperCase()
+}
+
 export function LeadGateProvider({
   influencer,
+  defaultCoupon,
   children,
 }: {
   influencer: string
+  defaultCoupon: string
   children: React.ReactNode
 }) {
   const [unlocked, setUnlocked] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [phone, setPhone] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null)
+  const [coupon, setCoupon] = useState(
+    () => normalizeCoupon(new URLSearchParams(window.location.search).get('cupom') ?? '') || defaultCoupon,
+  )
 
   const openFor = useCallback(() => setIsOpen(true), [])
 
@@ -121,7 +139,7 @@ export function LeadGateProvider({
       acquireUrl: window.location.href,
       utm_source: params.get('utm_source') ?? '',
       utm_medium: params.get('utm_medium') ?? '',
-      utm_campaign: params.get('utm_campaign') ?? '',
+      utm_campaign: coupon || (params.get('utm_campaign') ?? ''),
       utm_term: params.get('utm_term') ?? '',
       utm_content: params.get('utm_content') ?? '',
       site_source_name: '',
@@ -143,13 +161,14 @@ export function LeadGateProvider({
       setSubmitting(false)
     }
 
+    setAppliedCoupon(VALID_COUPONS.has(coupon) ? coupon : null)
     setUnlocked(true)
     setIsOpen(false)
     document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <LeadGateContext.Provider value={{ unlocked, openFor }}>
+    <LeadGateContext.Provider value={{ unlocked, appliedCoupon, openFor }}>
       {children}
 
       <div
@@ -239,6 +258,28 @@ export function LeadGateProvider({
                 required
                 autoComplete="email"
               />
+            </div>
+
+            <div className="modal__field">
+              <label htmlFor="coupon">Cupom</label>
+              <input
+                type="text"
+                id="coupon"
+                name="coupon"
+                placeholder="Digite seu cupom"
+                autoComplete="off"
+                value={coupon}
+                onChange={(e) => setCoupon(normalizeCoupon(e.target.value))}
+              />
+              {coupon &&
+                (VALID_COUPONS.has(coupon) ? (
+                  <span className="modal__coupon-ok">
+                    <Icon name="check" size={14} strokeWidth={2.4} />
+                    Cupom aplicado
+                  </span>
+                ) : (
+                  <span className="modal__coupon-invalid">Cupom não encontrado</span>
+                ))}
             </div>
 
             <div className="modal__row">

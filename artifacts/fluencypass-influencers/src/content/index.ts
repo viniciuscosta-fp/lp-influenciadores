@@ -20,3 +20,9 @@ export const LP_SLUGS = ALL.map((lp) => lp.slug)
 export function getLP(slug: string): InfluencerLP | undefined {
   return LPS[slug]
 }
+
+/** Cupons aceitos além dos padrões de cada LP (ex.: campanhas pontuais). */
+const EXTRA_COUPONS: string[] = []
+
+/** Só controla o selo "Cupom aplicado" no formulário — não altera oferta. */
+export const VALID_COUPONS = new Set([...ALL.map((lp) => lp.defaultCoupon), ...EXTRA_COUPONS])

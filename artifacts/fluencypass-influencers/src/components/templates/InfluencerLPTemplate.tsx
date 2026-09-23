@@ -15,7 +15,7 @@ import type { InfluencerLP } from '@/content/types'
 /** Os 11 blocos, na ordem definida pelo briefing. */
 export function InfluencerLPTemplate({ lp }: { lp: InfluencerLP }) {
   return (
-    <LeadGateProvider influencer={lp.slug}>
+    <LeadGateProvider influencer={lp.slug} defaultCoupon={lp.defaultCoupon}>
       <Hero lp={lp} />
       <Ribbon lp={lp} />
       <Virada lp={lp} />

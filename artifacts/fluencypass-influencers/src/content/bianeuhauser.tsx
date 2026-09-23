@@ -19,6 +19,7 @@ export const bianeuhauser: InfluencerLP = {
   possessive: "dela",
   tone: "neutro",
   bonusModule: "Inglês para Business",
+  defaultCoupon: "BIANCA",
   avatar: "/assets/bianeuhauser-avatar.webp",
 
   meta: {

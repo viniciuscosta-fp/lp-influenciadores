@@ -31,6 +31,8 @@ export type InfluencerLP = {
   tone: Tone
   /** Módulo bônus exclusivo — hoje só existem estes dois. */
   bonusModule: 'Inglês para Business' | 'Inglês para Tech'
+  /** Cupom que vem no formulário quando a URL não traz ?cupom=. Hoje é só visual. */
+  defaultCoupon: string
   avatar: string
 
   meta: { title: string; description: string }

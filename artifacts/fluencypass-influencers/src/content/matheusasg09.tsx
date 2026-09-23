@@ -9,6 +9,7 @@ export const matheusasg09: InfluencerLP = {
   possessive: 'dele',
   tone: 'coloquial',
   bonusModule: 'Inglês para Tech',
+  defaultCoupon: 'MATHEUS',
   avatar: '/assets/FOTO MATHEUS.jpeg',
 
   meta: {

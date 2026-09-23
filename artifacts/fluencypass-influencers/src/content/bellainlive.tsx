@@ -30,6 +30,7 @@ export const bellainlive: InfluencerLP = {
   possessive: "dela",
   tone: "neutro",
   bonusModule: "Inglês para Tech",
+  defaultCoupon: "BELLA",
   avatar: "/assets/bellainlive-avatar.webp",
 
   meta: {
