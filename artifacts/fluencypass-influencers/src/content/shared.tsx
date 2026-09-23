@@ -27,7 +27,7 @@ export type Plan = {
   features: PlanFeature[]
 }
 
-/** `bonusModule` entra na feature "Bônus completo + …". */
+/** `bonusModule` entra como feature dos planos Professional e Premium. */
 export function getPlans(bonusModule: string, tone: Tone): Plan[] {
   const pra = tone === 'coloquial' ? 'pra' : 'para'
   return [
@@ -55,7 +55,7 @@ export function getPlans(bonusModule: string, tone: Tone): Plan[] {
       name: 'Professional',
       title: 'Turbine a prática',
       off: '47% OFF · exclusivo',
-      ribbon: 'Mais escolhido · 47% OFF',
+      ribbon: 'Mais escolhido',
       featured: true,
       desc: 'Escola online + Aulas particulares + Conversação ilimitada. O combo que destrava sua fluência de negócios.',
       price: 'R$247,00/mês',
@@ -67,7 +67,7 @@ export function getPlans(bonusModule: string, tone: Tone): Plan[] {
         { text: '2 a 4 testes de nível com IA' },
         { text: 'Garantia de 12 meses de evolução' },
         { text: 'Intercâmbio no exterior', dim: true },
-        { text: `Bônus completo + ${bonusModule}` },
+        { text: bonusModule },
         { text: '7 dias de risco zero' },
       ],
     },
@@ -86,7 +86,7 @@ export function getPlans(bonusModule: string, tone: Tone): Plan[] {
         { text: `Até 3 anos ${pra} usar o intercâmbio` },
         { text: 'Garantia de 12 meses de evolução' },
         { text: '4 testes de nível com IA' },
-        { text: `Bônus completo + ${bonusModule}` },
+        { text: bonusModule },
         { text: '7 dias de risco zero' },
       ],
     },

@@ -2,6 +2,7 @@ import { Cta } from '@/components/atoms/Cta'
 import { Icon } from '@/components/atoms/Icon'
 import { COMPANY } from '@/content/shared'
 import type { InfluencerLP } from '@/content/types'
+import { useLeadGate } from './LeadGate'
 
 export function Hero({ lp }: { lp: InfluencerLP }) {
   const { hero } = lp
@@ -60,5 +61,15 @@ export function Hero({ lp }: { lp: InfluencerLP }) {
 }
 
 export function Ribbon({ lp }: { lp: InfluencerLP }) {
-  return <div className="ribbon">{lp.ribbon}</div>
+  const { unlocked, coupon } = useLeadGate()
+  return (
+    <div className="ribbon">
+      {lp.ribbon}
+      {unlocked ? (
+        <> · cupom <strong>{coupon}</strong> aplicado ✓</>
+      ) : (
+        <> · use o cupom <strong>{coupon}</strong> no cadastro</>
+      )}
+    </div>
+  )
 }

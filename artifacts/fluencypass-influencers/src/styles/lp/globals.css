@@ -650,7 +650,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-size: 14px; color: var(--gray-600);
 }
 .plans__guarantee svg { color: var(--green); }
-.plans__guarantee--coupon strong { color: var(--green); }
 
 @media (max-width: 980px) {
   .plans__grid { grid-template-columns: 1fr; gap: 32px; }
@@ -1312,6 +1311,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: #fff;
   text-align: center;
 }
+.modal__subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: rgba(255,255,255,0.9);
+}
+.modal__subtitle strong { letter-spacing: 0.08em; }
 
 /* Botão fechar — fica sobre o header gradiente */
 .modal__close {
@@ -1487,7 +1492,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* Plan price reveal */
 .plan__price {
-  display: none;
+  display: block;
   font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.03em;
@@ -1500,9 +1505,99 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   letter-spacing: 0;
   color: var(--gray-500);
 }
-body.plans-unlocked .plan__off   { display: none; }
 body.plans-unlocked .plan__title { display: none; }
-body.plans-unlocked .plan__price { display: block; }
+
+/* Bloco da oferta no card: % OFF + preço, sob o GlassLock até liberar. */
+.plan__offer { margin: 20px 0 0; }
+.plan__offer .plan__off { margin-bottom: 12px; }
+body.plans-unlocked .plan__offer { margin-top: 8px; }
+
+/* ---------- GLASS LOCK (vidro fosco sobre a oferta) ---------- */
+.glass-lock { position: relative; }
+.glass-lock__content {
+  filter: blur(9px);
+  transition: filter .6s ease;
+  user-select: none;
+}
+.glass-lock.is-open .glass-lock__content { filter: none; user-select: auto; }
+
+.glass-lock__pane {
+  position: absolute; inset: -6px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font: inherit; text-align: center; cursor: pointer;
+  overflow: hidden;
+  transition: opacity .6s ease, visibility .6s;
+}
+.glass-lock--light .glass-lock__pane {
+  background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.38));
+  border: 1px solid rgba(255,255,255,0.9);
+  box-shadow: 0 8px 24px -12px rgba(20,20,40,0.18), inset 0 1px 0 rgba(255,255,255,0.9);
+  color: var(--gray-950);
+}
+.glass-lock--dark .glass-lock__pane {
+  background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 12px 32px -16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
+  color: #fff;
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-lock__pane {
+    -webkit-backdrop-filter: saturate(160%) blur(6px);
+    backdrop-filter: saturate(160%) blur(6px);
+  }
+}
+/* Brilho que atravessa o vidro devagar. */
+.glass-lock__pane::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.45) 50%, transparent 65%);
+  background-size: 250% 100%;
+  animation: glass-sheen 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+.glass-lock--dark .glass-lock__pane::after {
+  background-image: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.12) 50%, transparent 65%);
+}
+@keyframes glass-sheen {
+  0%   { background-position: 130% 0; }
+  60%, 100% { background-position: -30% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glass-lock__pane::after { animation: none; }
+}
+.glass-lock__pane:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
+.glass-lock.is-open .glass-lock__pane { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.glass-lock__label {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+.glass-lock__detail { font-size: 14px; opacity: 0.75; }
+.glass-lock__action { margin-top: 14px; pointer-events: none; }
+
+.bonus__lock .glass-lock__pane { inset: 0; border-radius: 24px; gap: 6px; }
+.bonus__lock .glass-lock__label { font-size: 14px; }
+.bonus__lock .glass-lock__detail { font-size: 16px; }
+
+/* ---------- CUPOM APLICADO (topo dos planos, após o cadastro) ---------- */
+.coupon-banner {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  flex-wrap: wrap;
+  max-width: 760px;
+  margin: 0 auto 40px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  font-size: 15px; color: var(--gray-950);
+  text-align: center;
+}
+.coupon-banner--applied {
+  border: 1px solid rgba(0,194,52,0.35);
+  background: rgba(0,194,52,0.08);
+}
+.coupon-banner--applied svg { color: var(--green); flex-shrink: 0; }
+.coupon-banner--applied strong { color: var(--green); }
 
 /* ====================================================================
  * MOBILE PADDING ADJUSTMENTS

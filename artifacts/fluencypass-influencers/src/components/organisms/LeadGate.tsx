@@ -22,16 +22,17 @@ import type { Plan } from '@/content/shared'
  * no formulário, mas ainda não têm destino: entrariam em `extras`, que exige
  * propriedade criada no HubSpot com o internal name exato.
  *
- * Cupom: vem de ?cupom= ou do padrão da LP e é editável. A checagem contra
- * VALID_COUPONS só troca o selo do campo — não bloqueia o envio nem muda a
- * oferta (os bônus são definidos pela página). O cupom viaja em `utm_campaign`;
- * o utm_campaign original continua preservado em `acquireUrl`.
+ * Cupom: vem de ?cupom= ou do padrão da LP e é editável. Todo cupom válido
+ * libera a mesma oferta (a da página); inválido ou vazio cai no padrão da LP,
+ * então o envio nunca é bloqueado. O cupom efetivo (`coupon` no contexto) é o
+ * que a página exibe e o que viaja em `utm_campaign` — o utm_campaign original
+ * continua preservado em `acquireUrl`.
  */
 
 type LeadGateValue = {
   unlocked: boolean
-  /** Cupom válido enviado no formulário; null antes do envio ou se inválido. */
-  appliedCoupon: string | null
+  /** Cupom efetivo: o digitado, se válido; senão o padrão da LP. */
+  coupon: string
   openFor: () => void
 }
 
@@ -94,10 +95,11 @@ export function LeadGateProvider({
   const [isOpen, setIsOpen] = useState(false)
   const [phone, setPhone] = useState('')
   const [submitting, setSubmitting] = useState(false)
-  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null)
   const [coupon, setCoupon] = useState(
     () => normalizeCoupon(new URLSearchParams(window.location.search).get('cupom') ?? '') || defaultCoupon,
   )
+
+  const activeCoupon = VALID_COUPONS.has(coupon) ? coupon : defaultCoupon
 
   const openFor = useCallback(() => setIsOpen(true), [])
 
@@ -139,7 +141,7 @@ export function LeadGateProvider({
       acquireUrl: window.location.href,
       utm_source: params.get('utm_source') ?? '',
       utm_medium: params.get('utm_medium') ?? '',
-      utm_campaign: coupon || (params.get('utm_campaign') ?? ''),
+      utm_campaign: activeCoupon,
       utm_term: params.get('utm_term') ?? '',
       utm_content: params.get('utm_content') ?? '',
       site_source_name: '',
@@ -161,14 +163,13 @@ export function LeadGateProvider({
       setSubmitting(false)
     }
 
-    setAppliedCoupon(VALID_COUPONS.has(coupon) ? coupon : null)
     setUnlocked(true)
     setIsOpen(false)
     document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <LeadGateContext.Provider value={{ unlocked, appliedCoupon, openFor }}>
+    <LeadGateContext.Provider value={{ unlocked, coupon: activeCoupon, openFor }}>
       {children}
 
       <div
@@ -190,6 +191,9 @@ export function LeadGateProvider({
             <h3 className="modal__title" id="modalTitle">
               Desbloquear oferta especial
             </h3>
+            <p className="modal__subtitle">
+              com o cupom <strong>{activeCoupon}</strong>
+            </p>
           </div>
 
           <form className="modal__form" id="planForm" noValidate onSubmit={handleSubmit}>
@@ -278,7 +282,9 @@ export function LeadGateProvider({
                     Cupom aplicado
                   </span>
                 ) : (
-                  <span className="modal__coupon-invalid">Cupom não encontrado</span>
+                  <span className="modal__coupon-invalid">
+                    Cupom não encontrado · aplicaremos {defaultCoupon}
+                  </span>
                 ))}
             </div>
 

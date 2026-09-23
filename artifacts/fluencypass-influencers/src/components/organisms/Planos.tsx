@@ -7,13 +7,22 @@ import { CenterFeaturedPlan } from './CenterFeaturedPlan'
 
 export function Planos({ lp }: { lp: InfluencerLP }) {
   const plans = getPlans(lp.bonusModule, lp.tone)
-  const { appliedCoupon } = useLeadGate()
+  const { unlocked, coupon } = useLeadGate()
   return (
     <section className="section plans" id="planos" data-screen-label="04 Planos">
       <div className="container">
         <div className="plans__head">
           <h2 className="h-section">{lp.planos.h2}</h2>
         </div>
+        {unlocked && (
+          <div className="coupon-banner coupon-banner--applied" role="status">
+            <Icon name="check" size={20} strokeWidth={2.4} />
+            <span>
+              <strong>Cupom {coupon} aplicado:</strong> condição especial liberada.
+            </span>
+          </div>
+        )}
+
         <p className="aviso-rolamento">← arraste para explorar →</p>
         <div className="plans__grid plans__grid--carousel">
           {plans.map((plan) => (
@@ -22,23 +31,13 @@ export function Planos({ lp }: { lp: InfluencerLP }) {
         </div>
         <CenterFeaturedPlan />
 
-        {appliedCoupon ? (
-          <div className="plans__guarantee plans__guarantee--coupon">
-            <Icon name="check" size={20} strokeWidth={2.4} />
-            <span>
-              <strong>Cupom {appliedCoupon} aplicado:</strong> sua oferta exclusiva está
-              liberada.
-            </span>
-          </div>
-        ) : (
-          <div className="plans__guarantee">
-            <Icon name="shield" size={20} strokeWidth={2} />
-            <span>
-              <strong style={{ color: 'var(--gray-950)' }}>Risco zero:</strong> 7 dias para sua
-              satisfação ou seu dinheiro de volta.
-            </span>
-          </div>
-        )}
+        <div className="plans__guarantee">
+          <Icon name="shield" size={20} strokeWidth={2} />
+          <span>
+            <strong style={{ color: 'var(--gray-950)' }}>Risco zero:</strong> 7 dias para sua
+            satisfação ou seu dinheiro de volta.
+          </span>
+        </div>
       </div>
     </section>
   )
