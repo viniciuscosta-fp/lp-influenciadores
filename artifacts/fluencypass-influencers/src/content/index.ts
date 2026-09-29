@@ -24,5 +24,5 @@ export function getLP(slug: string): InfluencerLP | undefined {
 /** Cupons aceitos além dos padrões de cada LP (ex.: campanhas pontuais). */
 const EXTRA_COUPONS: string[] = []
 
-/** Só controla o selo "Cupom aplicado" no formulário — não altera oferta. */
+/** Cupons que ativam os bônus no modal de cupom. Não alteram a oferta (preços). */
 export const VALID_COUPONS = new Set([...ALL.map((lp) => lp.defaultCoupon), ...EXTRA_COUPONS])

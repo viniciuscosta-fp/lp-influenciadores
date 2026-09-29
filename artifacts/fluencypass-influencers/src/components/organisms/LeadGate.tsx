@@ -1,14 +1,22 @@
 import { createContext, useCallback, useContext, useEffect, useState, type FormEvent } from 'react'
 import { Icon } from '@/components/atoms/Icon'
 import { VALID_COUPONS } from '@/content'
-import type { Plan } from '@/content/shared'
+import { BONUS_OFFER, isBonusAvailable, withCoupon, type Plan } from '@/content/shared'
+import type { InfluencerLP } from '@/content/types'
 
 /**
- * Porteira de lead dos planos.
+ * Porteira de lead dos planos + ativação de bônus por cupom.
  *
- * Reproduz o comportamento das LPs originais: o CTA de cada plano abre um
- * formulário; ao enviar, a página libera preços e troca os CTAs pelos links de
- * checkout (body.plans-unlocked no CSS).
+ * São dois passos independentes:
+ *  1. o formulário de lead tira todos os vidros (preços e bônus) e troca os
+ *     CTAs pelos links de checkout (body.plans-unlocked no CSS). A oferta não
+ *     depende de cupom;
+ *  2. o cupom, digitado no campo da seção de bônus, ativa os bônus — que até
+ *     lá aparecem como "inativos". A ativação pode ser travada por
+ *     BONUS_OFFER / lp.bonusActivation (ver content/shared.tsx).
+ *
+ * Os CTAs de bônus (card, faixa dos planos) só levam até o campo de cupom.
+ * Quem chega lá antes do lead passa pelo formulário e volta direto ao campo.
  *
  * Diferenças em relação ao HTML antigo:
  *  - o POST vai para /api/lead (proxy), não direto para o n8n — a URL do webhook
@@ -22,19 +30,32 @@ import type { Plan } from '@/content/shared'
  * no formulário, mas ainda não têm destino: entrariam em `extras`, que exige
  * propriedade criada no HubSpot com o internal name exato.
  *
- * Cupom: vem de ?cupom= ou do padrão da LP e é editável. Todo cupom válido
- * libera a mesma oferta (a da página); inválido ou vazio cai no padrão da LP,
- * então o envio nunca é bloqueado. O cupom efetivo (`coupon` no contexto) é o
- * que a página exibe e o que viaja em `utm_campaign` — o utm_campaign original
- * continua preservado em `acquireUrl`.
+ * Cupom: o da LP (?cupom= válido ou o padrão) viaja em `utm_campaign` no lead
+ * — o utm_campaign original continua preservado em `acquireUrl`. O campo da
+ * seção de bônus só vem preenchido quando a URL traz um ?cupom= válido; fora
+ * isso a pessoa digita o cupom que o creator divulgou.
  */
 
 type LeadGateValue = {
+  /** Oferta (preços) liberada pelo formulário de lead. */
   unlocked: boolean
-  /** Cupom efetivo: o digitado, se válido; senão o padrão da LP. */
+  /** Bônus liberados pelo cupom. */
+  bonusUnlocked: boolean
+  /** Ativação de bônus aberta agora (não travada por oferta/período). */
+  bonusAvailable: boolean
+  /** Cupom efetivo: o ativado, se houver; senão o da LP. */
   coupon: string
+  /** ?cupom= da URL, se válido — pré-preenche o campo de cupom. */
+  urlCoupon: string
   openFor: () => void
+  /** Leva ao campo de cupom (passando pelo lead, se ainda não houver). */
+  openBonus: () => void
+  /** Valida e ativa; false = cupom não encontrado. */
+  activateBonus: (code: string) => boolean
 }
+
+/** id do campo de cupom na seção de bônus (BonusKit). */
+export const BONUS_COUPON_FIELD = 'bonusCoupon'
 
 const LeadGateContext = createContext<LeadGateValue | null>(null)
 
@@ -45,11 +66,12 @@ export function useLeadGate(): LeadGateValue {
 }
 
 export function PlanCta({ plan }: { plan: Plan }) {
-  const { unlocked, openFor } = useLeadGate()
+  const { unlocked, bonusUnlocked, coupon, openFor } = useLeadGate()
 
   if (unlocked) {
+    const href = bonusUnlocked && plan.hasBonus ? withCoupon(plan.checkout, coupon) : plan.checkout
     return (
-      <a href={plan.checkout} className="btn btn--coral btn--block plan__cta">
+      <a href={href} className="btn btn--coral btn--block plan__cta">
         Comprar agora
       </a>
     )
@@ -69,6 +91,28 @@ export function PlanCta({ plan }: { plan: Plan }) {
   )
 }
 
+/** Segundo botão do card, abaixo do "Comprar agora": leva ao campo de cupom da seção de bônus. */
+export function BonusCta({ plan }: { plan: Plan }) {
+  const { unlocked, bonusUnlocked, bonusAvailable, openBonus } = useLeadGate()
+  if (!unlocked || !plan.hasBonus || !bonusAvailable) return null
+
+  if (bonusUnlocked) {
+    return (
+      <span className="plan__bonus-cta is-done" role="status">
+        <Icon name="check" size={16} strokeWidth={2.4} />
+        Bônus ativado
+      </span>
+    )
+  }
+
+  return (
+    <button type="button" className="plan__bonus-cta" onClick={openBonus}>
+      <Icon name="gift" size={16} strokeWidth={2} />
+      {BONUS_OFFER.ctaLabel}
+    </button>
+  )
+}
+
 /** (11) 91234-5678 */
 function formatPhone(raw: string): string {
   const d = raw.replace(/\D/g, '').slice(0, 11)
@@ -78,32 +122,66 @@ function formatPhone(raw: string): string {
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`
 }
 
-function normalizeCoupon(raw: string): string {
+export function normalizeCoupon(raw: string): string {
   return raw.replace(/\s+/g, '').toUpperCase()
 }
 
-export function LeadGateProvider({
-  influencer,
-  defaultCoupon,
-  children,
-}: {
-  influencer: string
-  defaultCoupon: string
-  children: React.ReactNode
-}) {
+export function LeadGateProvider({ lp, children }: { lp: InfluencerLP; children: React.ReactNode }) {
+  const { defaultCoupon } = lp
   const [unlocked, setUnlocked] = useState(false)
+  const [bonusUnlocked, setBonusUnlocked] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  /** De onde o lead foi pedido: pelo bônus, o envio volta ao campo de cupom. */
+  const [leadForBonus, setLeadForBonus] = useState(false)
+  /** Incrementa para rolar até o campo de cupom depois do próximo render. */
+  const [bonusFocusTick, setBonusFocusTick] = useState(0)
   const [phone, setPhone] = useState('')
   const [submitting, setSubmitting] = useState(false)
-  const [coupon, setCoupon] = useState(
-    () => normalizeCoupon(new URLSearchParams(window.location.search).get('cupom') ?? '') || defaultCoupon,
+
+  const [urlCoupon] = useState(() => {
+    const fromUrl = normalizeCoupon(new URLSearchParams(window.location.search).get('cupom') ?? '')
+    return VALID_COUPONS.has(fromUrl) ? fromUrl : ''
+  })
+  // Cupom da LP para atribuição (utm_campaign). Não é exibido na página.
+  const lpCoupon = urlCoupon || defaultCoupon
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null)
+
+  const [bonusAvailable] = useState(() => isBonusAvailable(lp))
+
+  const openFor = useCallback(() => {
+    setLeadForBonus(false)
+    setIsOpen(true)
+  }, [])
+
+  const openBonus = useCallback(() => {
+    if (!unlocked) {
+      setLeadForBonus(true)
+      setIsOpen(true)
+    } else if (bonusAvailable && !bonusUnlocked) {
+      setBonusFocusTick((t) => t + 1)
+    }
+  }, [bonusAvailable, bonusUnlocked, unlocked])
+
+  const activateBonus = useCallback(
+    (code: string) => {
+      const c = normalizeCoupon(code)
+      if (!bonusAvailable || !VALID_COUPONS.has(c)) return false
+      setAppliedCoupon(c)
+      setBonusUnlocked(true)
+      return true
+    },
+    [bonusAvailable],
   )
 
-  const activeCoupon = VALID_COUPONS.has(coupon) ? coupon : defaultCoupon
-
-  const openFor = useCallback(() => setIsOpen(true), [])
-
   const close = useCallback(() => setIsOpen(false), [])
+
+  // Roda depois do render: após o lead, o campo de cupom acabou de aparecer.
+  useEffect(() => {
+    if (!bonusFocusTick) return
+    const field = document.getElementById(BONUS_COUPON_FIELD)
+    field?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    field?.focus({ preventScroll: true })
+  }, [bonusFocusTick])
 
   // A folha de estilo controla preços e CTAs por body.plans-unlocked.
   useEffect(() => {
@@ -141,11 +219,11 @@ export function LeadGateProvider({
       acquireUrl: window.location.href,
       utm_source: params.get('utm_source') ?? '',
       utm_medium: params.get('utm_medium') ?? '',
-      utm_campaign: activeCoupon,
+      utm_campaign: lpCoupon,
       utm_term: params.get('utm_term') ?? '',
       utm_content: params.get('utm_content') ?? '',
       site_source_name: '',
-      affiliateCode: influencer,
+      affiliateCode: lp.slug,
     }
 
     setSubmitting(true)
@@ -165,11 +243,29 @@ export function LeadGateProvider({
 
     setUnlocked(true)
     setIsOpen(false)
-    document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' })
+    if (leadForBonus && bonusAvailable) {
+      // Continua na seção de bônus: o próximo passo é o cupom.
+      setBonusFocusTick((t) => t + 1)
+    } else if (leadForBonus) {
+      document.getElementById('bonus')?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
-    <LeadGateContext.Provider value={{ unlocked, coupon: activeCoupon, openFor }}>
+    <LeadGateContext.Provider
+      value={{
+        unlocked,
+        bonusUnlocked,
+        bonusAvailable,
+        coupon: appliedCoupon ?? lpCoupon,
+        urlCoupon,
+        openFor,
+        openBonus,
+        activateBonus,
+      }}
+    >
       {children}
 
       <div
@@ -189,10 +285,12 @@ export function LeadGateProvider({
 
           <div className="modal__header">
             <h3 className="modal__title" id="modalTitle">
-              Desbloquear oferta especial
+              {leadForBonus ? 'Ativar bônus exclusivos' : 'Desbloquear oferta especial'}
             </h3>
             <p className="modal__subtitle">
-              com o cupom <strong>{activeCoupon}</strong>
+              {leadForBonus
+                ? 'Cadastre-se para ativar seus bônus'
+                : 'Preencha para ver os preços exclusivos'}
             </p>
           </div>
 
@@ -264,30 +362,6 @@ export function LeadGateProvider({
               />
             </div>
 
-            <div className="modal__field">
-              <label htmlFor="coupon">Cupom</label>
-              <input
-                type="text"
-                id="coupon"
-                name="coupon"
-                placeholder="Digite seu cupom"
-                autoComplete="off"
-                value={coupon}
-                onChange={(e) => setCoupon(normalizeCoupon(e.target.value))}
-              />
-              {coupon &&
-                (VALID_COUPONS.has(coupon) ? (
-                  <span className="modal__coupon-ok">
-                    <Icon name="check" size={14} strokeWidth={2.4} />
-                    Cupom aplicado
-                  </span>
-                ) : (
-                  <span className="modal__coupon-invalid">
-                    Cupom não encontrado · aplicaremos {defaultCoupon}
-                  </span>
-                ))}
-            </div>
-
             <div className="modal__row">
               <div className="modal__field">
                 <label htmlFor="timing">Quando pretende</label>
@@ -323,7 +397,7 @@ export function LeadGateProvider({
 
             <button type="submit" className="btn btn--greed-cta btn--block" disabled={submitting}>
               <Icon name="lock-sm" size={18} strokeWidth={2.4} />
-              {submitting ? 'ENVIANDO…' : 'VER PREÇOS AGORA'}
+              {submitting ? 'ENVIANDO…' : leadForBonus ? 'CONTINUAR' : 'VER PREÇOS AGORA'}
             </button>
           </form>
         </div>

@@ -61,15 +61,12 @@ export function Hero({ lp }: { lp: InfluencerLP }) {
 }
 
 export function Ribbon({ lp }: { lp: InfluencerLP }) {
-  const { unlocked, coupon } = useLeadGate()
+  const { unlocked, bonusUnlocked } = useLeadGate()
+  // O cupom não aparece aqui: ele é passado pelo creator, não "dado" pela página.
   return (
     <div className="ribbon">
       {lp.ribbon}
-      {unlocked ? (
-        <> · cupom <strong>{coupon}</strong> aplicado ✓</>
-      ) : (
-        <> · use o cupom <strong>{coupon}</strong> no cadastro</>
-      )}
+      {bonusUnlocked ? <> · bônus ativados ✓</> : unlocked && <> · oferta liberada ✓</>}
     </div>
   )
 }

@@ -1,22 +1,22 @@
 import { Check } from '@/components/atoms/Check'
+import { Icon } from '@/components/atoms/Icon'
 import { GlassLock } from '@/components/molecules/GlassLock'
-import { useLeadGate } from '@/components/organisms/LeadGate'
-import { PlanCta } from '@/components/organisms/LeadGate'
+import { BonusCta, PlanCta, useLeadGate } from '@/components/organisms/LeadGate'
 import type { Plan } from '@/content/shared'
 
 export function PlanCard({ plan }: { plan: Plan }) {
-  const { coupon } = useLeadGate()
+  const { unlocked, bonusAvailable } = useLeadGate()
   return (
     <article className={plan.featured ? 'plan plan--featured' : 'plan'}>
       {plan.ribbon && <span className="plan__ribbon">{plan.ribbon}</span>}
       <span className="plan__name">{plan.name}</span>
       <h3 className="plan__title">{plan.title}</h3>
-      {/* % OFF e preço ficam sob o vidro até o formulário ser enviado. */}
+      {/* % OFF e preço ficam sob o vidro até o formulário ser enviado. A oferta não depende de cupom. */}
       <GlassLock
         className="plan__offer"
         tone={plan.featured ? 'dark' : 'light'}
-        label="Condição exclusiva"
-        detail={<>cupom {coupon}</>}
+        label="Preço para seguidores"
+        detail="cadastre-se para ver"
       >
         <span className="plan__off">{plan.off}</span>
         <span className="plan__price">
@@ -24,6 +24,12 @@ export function PlanCard({ plan }: { plan: Plan }) {
           <span className="plan__price-period">/mês</span>
         </span>
       </GlassLock>
+      {!unlocked && plan.hasBonus && bonusAvailable && (
+        <span className="plan__bonus-hint">
+          <Icon name="gift" size={14} strokeWidth={2} />
+          + bônus exclusivos com cupom
+        </span>
+      )}
       <p className="plan__desc">{plan.desc}</p>
       <ul className="plan__features">
         {plan.features.map((f) => (
@@ -34,6 +40,7 @@ export function PlanCard({ plan }: { plan: Plan }) {
         ))}
       </ul>
       <PlanCta plan={plan} />
+      <BonusCta plan={plan} />
     </article>
   )
 }

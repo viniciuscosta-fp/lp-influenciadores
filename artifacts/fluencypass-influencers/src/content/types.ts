@@ -14,6 +14,13 @@ export type AspiraCard = { icon: IconName; title: string; text: string }
 
 export type FaqItem = { q: string; a: ReactNode }
 
+export type BonusActivation = {
+  /** false trava a ativação de bônus (ex.: oferta encerrada). */
+  enabled?: boolean
+  /** Dias do mês, inclusive, em que a ativação fica aberta. Ex.: [1, 10]. */
+  days?: [number, number]
+}
+
 /**
  * Tudo que muda de uma LP pra outra. O que não está aqui vem de content/shared.tsx
  * e é idêntico em todas as páginas (planos, método, tabela, FAQ base, alunos).
@@ -31,8 +38,16 @@ export type InfluencerLP = {
   tone: Tone
   /** Módulo bônus exclusivo — hoje só existem estes dois. */
   bonusModule: 'Inglês para Business' | 'Inglês para Tech'
-  /** Cupom que vem no formulário quando a URL não traz ?cupom=. Hoje é só visual. */
+  /**
+   * Cupom que vem pré-preenchido no modal de bônus quando a URL não traz
+   * ?cupom=. Libera os bônus (não a oferta) e viaja em `utm_campaign`.
+   */
   defaultCoupon: string
+  /**
+   * Trava da ativação de bônus só desta LP. Sobrepõe BONUS_OFFER (shared.tsx)
+   * campo a campo; omitir = segue o padrão compartilhado.
+   */
+  bonusActivation?: BonusActivation
   avatar: string
 
   meta: { title: string; description: string }

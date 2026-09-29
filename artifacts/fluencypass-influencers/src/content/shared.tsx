@@ -1,5 +1,5 @@
 import type { IconName } from '@/components/atoms/Icon'
-import type { FaqItem, Tone } from './types'
+import type { BonusActivation, FaqItem, InfluencerLP, Tone } from './types'
 
 /**
  * Conteúdo idêntico em todas as LPs. Mudar aqui muda em todas as páginas —
@@ -20,6 +20,8 @@ export type Plan = {
   off: string
   ribbon?: string
   featured?: boolean
+  /** Plano elegível aos bônus: ganha selo e botão "Desbloquear bônus exclusivo". */
+  hasBonus?: boolean
   desc: string
   price: string
   /** Placeholder — aguardando URLs reais de checkout (B2). */
@@ -57,6 +59,7 @@ export function getPlans(bonusModule: string, tone: Tone): Plan[] {
       off: '47% OFF · exclusivo',
       ribbon: 'Mais escolhido',
       featured: true,
+      hasBonus: true,
       desc: 'Escola online + Aulas particulares + Conversação ilimitada. O combo que destrava sua fluência de negócios.',
       price: 'R$247,00/mês',
       checkout: '#checkout-professional',
@@ -76,6 +79,7 @@ export function getPlans(bonusModule: string, tone: Tone): Plan[] {
       name: 'Premium',
       title: 'Ciclo completo',
       off: '31% OFF · exclusivo',
+      hasBonus: true,
       desc: 'O ciclo completo da fluência: Escola online + Aula particular + Conversação ilimitada + Intercâmbio.',
       price: 'R$497,00/mês',
       checkout: '#checkout-premium',
@@ -93,6 +97,43 @@ export function getPlans(bonusModule: string, tone: Tone): Plan[] {
   ]
 }
 
+/**
+ * Link de checkout com o cupom do bônus. Os checkouts ainda são placeholders
+ * (B2); o parâmetro já fica pronto para os links reais.
+ */
+export function withCoupon(url: string, coupon: string): string {
+  return `${url}${url.includes('?') ? '&' : '?'}cupom=${encodeURIComponent(coupon)}`
+}
+
+/* ---------- OFERTA DE BÔNUS (ativação por cupom) ---------- */
+
+/**
+ * Único lugar a editar quando a oferta de bônus mudar. O cadastro mostra tudo;
+ * os bônus ficam "inativos" até o cupom, e a ativação pode ser travada aqui
+ * (todas as LPs) ou em `bonusActivation` de cada LP.
+ */
+export const BONUS_OFFER: { headline: string; ctaLabel: string } & BonusActivation = {
+  /** Chamada no vidro da seção de bônus, antes do cadastro. */
+  headline: 'Ative o bônus e ganhe R$\u00a01.500 em bônus exclusivos',
+  /** Botão dos cards de plano que leva ao campo de cupom. */
+  ctaLabel: 'Ativar R$\u00a01.500 em bônus',
+  enabled: true,
+  days: undefined,
+}
+
+/**
+ * A janela por dia do mês usa o relógio do navegador: controla a vitrine da
+ * página, não a regra comercial do checkout.
+ */
+export function isBonusAvailable(lp: InfluencerLP, now: Date = new Date()): boolean {
+  const enabled = lp.bonusActivation?.enabled ?? BONUS_OFFER.enabled ?? true
+  const days = lp.bonusActivation?.days ?? BONUS_OFFER.days
+  if (!enabled) return false
+  if (!days) return true
+  const d = now.getDate()
+  return d >= days[0] && d <= days[1]
+}
+
 /* ---------- BÔNUS 02 (bloco 5) ---------- */
 
 export function getBonusSecondary(tone: Tone) {
@@ -105,7 +146,10 @@ export function getBonusSecondary(tone: Tone) {
   }
 }
 
-/** Soma dos dois bônus. Diverge do briefing (R$ 2.497) — ver B4 no plano. */
+/**
+ * Soma dos dois bônus. Diverge do briefing (R$ 2.497) — ver B4 no plano — e
+ * da chamada arredondada de BONUS_OFFER.headline (R$ 1.500).
+ */
 export const BONUS_TOTAL = 'R$ 1497'
 
 /* ---------- MÉTODO (bloco 7) ---------- */

@@ -4,9 +4,10 @@ import { useLeadGate } from '@/components/organisms/LeadGate'
 /**
  * Vidro fosco sobre um conteúdo da oferta (preço, % OFF, bônus) até o lead se
  * cadastrar. O conteúdo real fica no DOM, só desfocado — é visual, não sigilo.
- * O painel inteiro é clicável e abre o formulário.
+ * O painel inteiro é clicável e abre o formulário (ou `onOpen`).
  */
 export function GlassLock({
+  onOpen,
   label,
   detail,
   action,
@@ -14,6 +15,8 @@ export function GlassLock({
   className,
   children,
 }: {
+  /** Ação do clique; padrão: abrir o formulário de lead. */
+  onOpen?: () => void
   label: ReactNode
   detail?: ReactNode
   /** Texto de um botão dentro do painel (ex.: "Liberar bônus"). */
@@ -37,7 +40,7 @@ export function GlassLock({
       <button
         type="button"
         className="glass-lock__pane"
-        onClick={openFor}
+        onClick={onOpen ?? openFor}
         tabIndex={unlocked ? -1 : undefined}
         aria-hidden={unlocked}
       >
