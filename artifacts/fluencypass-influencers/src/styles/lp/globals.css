@@ -870,6 +870,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .bonus__plans .plans__grid { grid-template-columns: repeat(2, 1fr); max-width: 760px; margin: 0 auto; }
 /* O card destacado é da cor do fundo: a borda é o que o separa da seção. */
 .bonus__plans .plan--featured { border-color: rgba(255,255,255,0.18); }
+/* Com só dois cards, o destaque elevado da grade de 3 deixa um mais alto que o outro. */
+.bonus__plans .plan--featured { transform: none; }
+.bonus__plans .plan--featured:hover { transform: translateY(-4px); }
 
 /* Campo de cupom inline, no lugar do CTA do total. */
 .bonus-coupon { display: flex; flex-direction: column; gap: 8px; min-width: 340px; text-align: left; }
