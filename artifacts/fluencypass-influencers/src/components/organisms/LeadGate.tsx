@@ -34,6 +34,11 @@ import type { InfluencerLP } from '@/content/types'
  * — o utm_campaign original continua preservado em `acquireUrl`. O campo da
  * seção de bônus só vem preenchido quando a URL traz um ?cupom= válido; fora
  * isso a pessoa digita o cupom que o creator divulgou.
+ *
+ * Ativação: quem decide se o cupom vale é o n8n (planilha), via /api/bonus —
+ * VALID_COUPONS só serve para pré-preencher o campo e para a atribuição. A
+ * resposta do n8n dispara a liberação do curso no HubSpot; ver
+ * docs/Webhook Ativacao Bonus - Especificacao.md.
  */
 
 type LeadGateValue = {
@@ -50,9 +55,12 @@ type LeadGateValue = {
   openFor: () => void
   /** Leva ao campo de cupom (passando pelo lead, se ainda não houver). */
   openBonus: () => void
-  /** Valida e ativa; false = cupom não encontrado. */
-  activateBonus: (code: string) => boolean
+  /** Valida no n8n e ativa. */
+  activateBonus: (code: string) => Promise<BonusActivationResult>
 }
+
+/** not_found/inactive: cupom recusado · unavailable: falha técnica, vale tentar de novo. */
+export type BonusActivationResult = 'ok' | 'not_found' | 'inactive' | 'unavailable'
 
 /** id do campo de cupom na seção de bônus (BonusKit). */
 export const BONUS_COUPON_FIELD = 'bonusCoupon'
@@ -137,6 +145,8 @@ export function LeadGateProvider({ lp, children }: { lp: InfluencerLP; children:
   const [bonusFocusTick, setBonusFocusTick] = useState(0)
   const [phone, setPhone] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  /** E-mail do lead: identifica o contato no HubSpot na ativação do bônus. */
+  const [leadEmail, setLeadEmail] = useState('')
 
   const [urlCoupon] = useState(() => {
     const fromUrl = normalizeCoupon(new URLSearchParams(window.location.search).get('cupom') ?? '')
@@ -163,14 +173,40 @@ export function LeadGateProvider({ lp, children }: { lp: InfluencerLP; children:
   }, [bonusAvailable, bonusUnlocked, unlocked])
 
   const activateBonus = useCallback(
-    (code: string) => {
+    async (code: string): Promise<BonusActivationResult> => {
       const c = normalizeCoupon(code)
-      if (!bonusAvailable || !VALID_COUPONS.has(c)) return false
-      setAppliedCoupon(c)
-      setBonusUnlocked(true)
-      return true
+      if (!bonusAvailable) return 'inactive'
+      if (!c) return 'not_found'
+      if (!leadEmail) return 'unavailable'
+
+      try {
+        const res = await fetch('/api/bonus', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: leadEmail,
+            coupon: c,
+            lpSlug: lp.slug,
+            acquireUrl: window.location.href,
+          }),
+        })
+        const data = (await res.json().catch(() => ({}))) as {
+          ok?: boolean
+          coupon?: string
+          reason?: BonusActivationResult
+        }
+        if (!res.ok || !data.ok) {
+          return data.reason === 'not_found' || data.reason === 'inactive' ? data.reason : 'unavailable'
+        }
+        setAppliedCoupon(data.coupon ?? c)
+        setBonusUnlocked(true)
+        return 'ok'
+      } catch (err) {
+        console.error('[bonus] erro de rede:', err)
+        return 'unavailable'
+      }
     },
-    [bonusAvailable],
+    [bonusAvailable, leadEmail, lp.slug],
   )
 
   const close = useCallback(() => setIsOpen(false), [])
@@ -241,6 +277,7 @@ export function LeadGateProvider({ lp, children }: { lp: InfluencerLP; children:
       setSubmitting(false)
     }
 
+    setLeadEmail(payload.email)
     setUnlocked(true)
     setIsOpen(false)
     if (leadForBonus && bonusAvailable) {

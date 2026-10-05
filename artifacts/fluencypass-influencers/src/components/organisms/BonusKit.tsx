@@ -2,7 +2,12 @@ import { useState, type FormEvent } from 'react'
 import { Cta } from '@/components/atoms/Cta'
 import { Icon } from '@/components/atoms/Icon'
 import { GlassLock } from '@/components/molecules/GlassLock'
-import { BONUS_COUPON_FIELD, normalizeCoupon, useLeadGate } from '@/components/organisms/LeadGate'
+import {
+  BONUS_COUPON_FIELD,
+  normalizeCoupon,
+  useLeadGate,
+  type BonusActivationResult,
+} from '@/components/organisms/LeadGate'
 import { BONUS_OFFER, BONUS_TOTAL, getBonusSecondary, getPlans } from '@/content/shared'
 import type { InfluencerLP } from '@/content/types'
 
@@ -74,15 +79,26 @@ function BonusCard({
   )
 }
 
+const COUPON_ERRORS: Record<Exclude<BonusActivationResult, 'ok'>, string> = {
+  not_found: 'Cupom não encontrado. Confira e tente de novo.',
+  inactive: 'Este cupom não está mais ativo.',
+  unavailable: 'Não conseguimos ativar seu bônus agora. Tente de novo em instantes.',
+}
+
 /** Campo de cupom inline: vazio, a menos que a URL traga um ?cupom= válido. */
 function BonusCouponForm({ lp }: { lp: InfluencerLP }) {
   const { urlCoupon, activateBonus } = useLeadGate()
   const [value, setValue] = useState(urlCoupon)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState<Exclude<BonusActivationResult, 'ok'> | null>(null)
+  const [pending, setPending] = useState(false)
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!activateBonus(value)) setError(true)
+    if (pending) return
+    setPending(true)
+    const result = await activateBonus(value)
+    setPending(false)
+    if (result !== 'ok') setError(result)
   }
 
   return (
@@ -98,15 +114,15 @@ function BonusCouponForm({ lp }: { lp: InfluencerLP }) {
           placeholder="Digite seu cupom"
           autoComplete="off"
           value={value}
-          aria-invalid={error}
+          aria-invalid={error !== null}
           aria-describedby={`${BONUS_COUPON_FIELD}-hint`}
           onChange={(e) => {
             setValue(normalizeCoupon(e.target.value))
-            setError(false)
+            setError(null)
           }}
         />
-        <button type="submit" className="btn btn--coral">
-          Ativar
+        <button type="submit" className="btn btn--coral" disabled={pending}>
+          {pending ? 'Ativando…' : 'Ativar'}
         </button>
       </div>
       <span
@@ -115,7 +131,7 @@ function BonusCouponForm({ lp }: { lp: InfluencerLP }) {
         role={error ? 'alert' : undefined}
       >
         {error
-          ? 'Cupom não encontrado. Confira e tente de novo.'
+          ? COUPON_ERRORS[error]
           : `Use o cupom que ${lp.article} ${lp.handle} divulgou.`}
       </span>
     </form>
