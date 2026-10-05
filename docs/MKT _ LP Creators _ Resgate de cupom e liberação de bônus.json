@@ -1,0 +1,1052 @@
+{
+  "name": "MKT | LP Creators | Resgate de cupom e liberação de bônus",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lp-creators/resgatar-cupom",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "b46894cd-ab12-4dc6-86c2-c8e0d877bffe",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -7312,
+        -240
+      ],
+      "webhookId": "006b3990-ae6d-4053-9207-676633849823",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Hgkaamfsb5OLdiNE",
+          "name": "Retention-3C-Report-Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ajustes do fluxo. Edite só este nó.\nconst CONFIG = {\n  sheet_id: 'COLE_AQUI_O_ID_DA_PLANILHA',\n  sheet_cupons: 'cupons',\n  sheet_resgates: 'resgates',\n\n  hubspot_prop_affiliate: 'affiliate_id',     // nome interno da propriedade de afiliado\n  hubspot_prop_curso: 'curso_extra',            // nome interno da propriedade do curso extra\n  hubspot_prop_curso_multi: false,              // true se a propriedade for multi-seleção\n  hubspot_prop_acquire_url: 'acquireurl',        // '' para não gravar\n  hubspot_prop_aulas_pendentes: '',              // '' para não gravar aulas pendentes no HubSpot\n\n  polling_max_tentativas: 3,                     // buscas no HubSpot antes de desistir\n  polling_intervalo_seg: 5,                      // espera entre buscas\n  timezone: 'America/Sao_Paulo',\n};\nreturn [{ json: CONFIG }];"
+      },
+      "id": "d571e96f-4ae1-4a36-b637-4b762fdfd977",
+      "name": "Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -7088,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza e valida o payload recebido no webhook\nconst body = $('Webhook').first().json.body || {};\nconst email = String(body.email || '').trim().toLowerCase();\nconst cupom = String(body.cupom || '').trim().toUpperCase().replace(/\\s+/g, '');\nconst acquire_url = String(body.acquireUrl || body.acquire_url || '').trim();\n\nconst erros = [];\nif (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) erros.push('email ausente ou inválido');\nif (!cupom) erros.push('cupom ausente');\n\nreturn [{\n  json: {\n    ok: erros.length === 0,\n    http_status: erros.length ? 400 : null,\n    reason: erros.length ? 'INVALID_PAYLOAD' : null,\n    message: erros.join('; ') || null,\n    email,\n    cupom,\n    acquire_url,\n  },\n}];"
+      },
+      "id": "651e7efe-c87f-426f-ab57-4d232af73ecf",
+      "name": "Validar Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -6864,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5a6a9179-deee-4861-bc02-348c4b2224c9",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e7e08312-79c6-4394-86be-d4f9025a04be",
+      "name": "Payload válido?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -6640,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: false, reason: $json.reason }) }}",
+        "options": {
+          "responseCode": "=400"
+        }
+      },
+      "id": "ebdf6af2-ce34-4e75-b558-72313b049c3d",
+      "name": "Erro: Payload",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -6432,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Config').first().json.sheet_id }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Config').first().json.sheet_cupons }}",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "0bda23bb-21c5-4908-b27b-1cc1a4a7a60d",
+      "name": "Ler Cupons (Sheets)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -6432,
+        -240
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "AHh1ymmzG9M3t6JS",
+          "name": "Sheets Geral"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera o objeto de decisão a partir da linha do cupom na planilha\nconst cfg = $('Config').first().json;\nconst state = $('Validar Payload').first().json;\n\nconst norm = (v) => String(v ?? '').trim().toUpperCase().replace(/\\s+/g, '');\nconst toBool = (v) => v === true || ['TRUE', 'VERDADEIRO', 'SIM', '1'].includes(norm(v));\nconst toInt = (v) => { const n = parseInt(String(v ?? '').trim(), 10); return Number.isFinite(n) ? n : null; };\nconst toISODate = (v) => {\n  if (v === null || v === undefined || v === '') return null;\n  if (typeof v === 'number') { // número serial de planilha\n    return new Date(Date.UTC(1899, 11, 30) + v * 86400000).toISOString().slice(0, 10);\n  }\n  const s = String(v).trim();\n  let m = s.match(/^(\\d{4})-(\\d{2})-(\\d{2})/);\n  if (m) return `${m[1]}-${m[2]}-${m[3]}`;\n  m = s.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})/);\n  if (m) return `${m[3]}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}`;\n  return null;\n};\nconst fail = (http_status, reason, message, extra = {}) =>\n  [{ json: { ...state, ok: false, http_status, reason, message, ...extra } }];\n\nconst rows = $input.all().map(i => i.json).filter(r => norm(r.cupom));\nconst matches = rows.filter(r => norm(r.cupom) === state.cupom);\n\nif (matches.length === 0) return fail(404, 'COUPON_NOT_FOUND', 'Cupom não encontrado');\nif (matches.length > 1) return fail(422, 'COUPON_MISCONFIGURED', 'Cupom duplicado na planilha');\n\nconst row = matches[0];\nconst hoje = DateTime.now().setZone(cfg.timezone).toISODate();\nconst inicio = toISODate(row.data_inicio);\nconst validade = toISODate(row.data_validade);\nconst affiliate_id = String(row.affiliate_id ?? '').trim();\nconst liberaCurso = toBool(row.libera_curso_extra);\nconst cursoCodigo = String(row.curso_extra_codigo ?? '').trim();\nconst liberaAulas = toBool(row.libera_aulas_extras);\nconst qtdAulas = toInt(row.qtd_aulas_extras);\n\nconst decisao = {\n  affiliate_id,\n  beneficios: {\n    curso_extra: { liberar: liberaCurso, codigo: liberaCurso ? cursoCodigo : null },\n    aulas_extras: { liberar: liberaAulas, quantidade: liberaAulas ? qtdAulas : null },\n  },\n};\n\nif (!toBool(row.ativo)) return fail(422, 'COUPON_INACTIVE', 'Cupom inativo', decisao);\n\nconst problemas = [];\nif (!validade) problemas.push('data_validade ausente ou inválida');\nif (!affiliate_id) problemas.push('affiliate_id ausente');\nif (liberaCurso && !cursoCodigo) problemas.push('curso_extra_codigo ausente');\nif (liberaAulas && (!qtdAulas || qtdAulas < 1)) problemas.push('qtd_aulas_extras inválida');\nif (problemas.length) return fail(422, 'COUPON_MISCONFIGURED', problemas.join('; '), decisao);\n\nif (inicio && hoje < inicio) return fail(422, 'COUPON_NOT_STARTED', `Cupom válido a partir de ${inicio}`, decisao);\nif (hoje > validade) return fail(422, 'COUPON_EXPIRED', `Cupom expirou em ${validade}`, decisao);\n\nreturn [{ json: { ...state, ok: true, http_status: null, reason: null, message: null, ...decisao } }];"
+      },
+      "id": "473c564b-69ba-48d8-8fa7-e878a2d62288",
+      "name": "Avaliar Cupom",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -6208,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3334904d-3d02-4f93-91c7-81d8bd9982ee",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "325801ba-55cc-4f4f-ab7a-9d884171c29e",
+      "name": "Cupom válido?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -5984,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: false, reason: $json.reason }) }}",
+        "options": {
+          "responseCode": "={{ $json.http_status }}"
+        }
+      },
+      "id": "62afb14e-2974-442b-aa14-567d6856023e",
+      "name": "Erro: Cupom",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -5920,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Conta tentativas de busca (entrada inicial ou retorno do Wait)\nconst cfg = $('Config').first().json;\nconst prev = $input.first().json;\nconst tentativa = (prev.tentativa || 0) + 1;\nconst search_properties = [\n  'email', 'firstname', 'lastname',\n  cfg.hubspot_prop_affiliate, cfg.hubspot_prop_curso, cfg.hubspot_prop_aulas_pendentes,\n].filter(Boolean);\nreturn [{ json: { ...prev, tentativa, search_properties } }];"
+      },
+      "id": "8a965c68-b68b-4bfa-8c75-12c46f5ad5f3",
+      "name": "Preparar Tentativa",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5760,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.hubapi.com/crm/v3/objects/contacts/search",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "hubspotAppToken",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ filterGroups: [{ filters: [{ propertyName: 'email', operator: 'EQ', value: $json.email }] }], properties: $json.search_properties, limit: 1 }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "id": "f631c23b-0edd-446a-977e-b4d36d1114b3",
+      "name": "HubSpot Search Contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -5552,
+        -240
+      ],
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "jzYV8uflWBM4tWcY",
+          "name": "HubSpot App Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const state = $('Preparar Tentativa').first().json;\nconst resp = $input.first().json;\nconst status = resp.statusCode;\nconst httpOk = status >= 200 && status < 300;\nconst contact = httpOk && resp.body && resp.body.total > 0 ? resp.body.results[0] : null;\n\nreturn [{\n  json: {\n    ...state,\n    contact_found: !!contact,\n    hubspot_contact_id: contact ? contact.id : null,\n    contact_props: contact ? contact.properties : {},\n    search_error: httpOk ? null : { status, body: resp.body },\n  },\n}];"
+      },
+      "id": "d16de202-26b0-45f5-a4df-017213a7daab",
+      "name": "Processar Busca",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5328,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3a9b7450-ff90-4d5a-8f1e-10c767351007",
+              "leftValue": "={{ $json.contact_found }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "85472b84-8dae-4937-9439-a5a52aaa256d",
+      "name": "Contato encontrado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -5104,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9502d4da-daf9-4f6e-b20e-a51e43272cf2",
+              "leftValue": "={{ $json.tentativa }}",
+              "rightValue": "={{ $('Config').first().json.polling_max_tentativas }}",
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "16b889d7-b815-4185-947f-17b38a990e42",
+      "name": "Tentar de novo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "amount": "={{ $('Config').first().json.polling_intervalo_seg }}"
+      },
+      "id": "6bd6e3b8-0ce2-4b7d-af9e-4806ac85c4d5",
+      "name": "Aguardar",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -4880,
+        208
+      ],
+      "webhookId": "38a1dfa2-d200-4a03-8874-ec1d8f0b0428"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: false, reason: $json.search_error ? 'HUBSPOT_ERROR' : 'CONTACT_NOT_FOUND' }) }}",
+        "options": {
+          "responseCode": "={{ $json.search_error ? 502 : 404 }}"
+        }
+      },
+      "id": "52f22acf-7e7e-4d12-97fc-89eb6f418bad",
+      "name": "Erro: Contato",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -4672,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Propriedades gravadas em todo resgate válido: afiliado e acquire url\nconst cfg = $('Config').first().json;\nconst s = $input.first().json;\nconst props = {};\nif (cfg.hubspot_prop_affiliate && s.affiliate_id) props[cfg.hubspot_prop_affiliate] = s.affiliate_id;\nif (cfg.hubspot_prop_acquire_url && s.acquire_url) props[cfg.hubspot_prop_acquire_url] = s.acquire_url;\nreturn [{ json: { ...s, hubspot_properties: props } }];"
+      },
+      "id": "fd5720ba-eb42-4576-bba4-66c6bb487fbb",
+      "name": "Montar Propriedades",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4880,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "009551e0-6b4f-4909-affa-a21f52b0c513",
+              "leftValue": "={{ $json.beneficios.curso_extra.liberar }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d3ab5ad3-4c1d-47b3-bfe3-9b0b7af57bc3",
+      "name": "Libera curso?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4672,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Liberação do curso extra: adiciona a propriedade do curso ao PATCH do contato.\n// A gravação efetiva acontece no nó HubSpot PATCH Contact.\nconst cfg = $('Config').first().json;\nconst s = $input.first().json;\nconst codigo = s.beneficios.curso_extra.codigo;\nconst atual = s.contact_props || {};\nconst props = { ...s.hubspot_properties };\n\nif (cfg.hubspot_prop_curso_multi) {\n  // multi-seleção: acrescenta o curso sem remover os que o contato já tem\n  const lista = String(atual[cfg.hubspot_prop_curso] || '').split(';').map(v => v.trim()).filter(Boolean);\n  if (!lista.includes(codigo)) lista.push(codigo);\n  props[cfg.hubspot_prop_curso] = lista.join(';');\n} else {\n  props[cfg.hubspot_prop_curso] = codigo;\n}\nreturn [{ json: { ...s, hubspot_properties: props } }];"
+      },
+      "id": "f2c2ac3a-3a6a-4c35-8f89-75fa3fd54ebc",
+      "name": "Liberar Curso Extra",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4448,
+        -432
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a2d4172c-eee8-4695-b81d-ad4809d00332",
+              "leftValue": "={{ $json.beneficios.aulas_extras.liberar }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7404e62a-77a2-4fe6-af6c-f5b2f6dc8671",
+      "name": "Libera aulas?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4224,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// PLACEHOLDER: liberação de aulas particulares extras.\n// Quando a forma de liberação estiver definida, inserir antes deste nó um\n// HTTP Request e ajustar aulas_status conforme a resposta ('released' ou 'failed').\n// Dados disponíveis: $json.email, $json.hubspot_contact_id,\n// $json.beneficios.aulas_extras.quantidade\nconst cfg = $('Config').first().json;\nconst s = $input.first().json;\nconst qtd = s.beneficios.aulas_extras.quantidade;\nconst props = { ...s.hubspot_properties };\n\n// Opcional: registra a quantidade pendente no HubSpot (somando ao valor atual)\nif (cfg.hubspot_prop_aulas_pendentes) {\n  const atual = parseInt((s.contact_props || {})[cfg.hubspot_prop_aulas_pendentes], 10) || 0;\n  props[cfg.hubspot_prop_aulas_pendentes] = String(atual + qtd);\n}\nreturn [{ json: { ...s, hubspot_properties: props, aulas_status: 'pending' } }];"
+      },
+      "id": "a78ee7a8-55a0-4e84-83b7-5440ac41d647",
+      "name": "Liberar Aulas (PENDENTE)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4000,
+        -432
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ponto de encontro dos ramos de curso e aulas antes do PATCH único\nreturn [{ json: $input.first().json }];"
+      },
+      "id": "986040b3-4245-437d-8754-25362bf05273",
+      "name": "Preparar PATCH",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3792,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.hubapi.com/crm/v3/objects/contacts/{{ $json.hubspot_contact_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "hubspotAppToken",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ properties: $json.hubspot_properties }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "id": "71de54ae-ad1c-4c65-b183-9029c32e8673",
+      "name": "HubSpot PATCH Contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3568,
+        -240
+      ],
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "jzYV8uflWBM4tWcY",
+          "name": "HubSpot App Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const s = $('Preparar PATCH').first().json;\nconst resp = $input.first().json;\nconst patch_ok = resp.statusCode >= 200 && resp.statusCode < 300;\nconst curso = s.beneficios.curso_extra;\nreturn [{\n  json: {\n    ...s,\n    patch_ok,\n    patch_status: resp.statusCode,\n    patch_error: patch_ok ? null : resp.body,\n    reason: patch_ok ? null : 'HUBSPOT_ERROR',\n    curso_status: curso.liberar ? 'released' : 'not_applicable',\n    aulas_status: s.aulas_status || 'not_applicable',\n  },\n}];"
+      },
+      "id": "b65015cb-744e-41a6-af68-2a1c00a3363c",
+      "name": "Processar PATCH",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3344,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "28e04a10-68ea-47c2-954d-e2387839f58a",
+              "leftValue": "={{ $json.patch_ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7a36a924-be2b-4f40-9d47-411eb9ec42da",
+      "name": "PATCH ok?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3120,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: false, reason: $json.reason }) }}",
+        "options": {
+          "responseCode": "=502"
+        }
+      },
+      "id": "314e4139-91e2-4821-ae11-26235c9809de",
+      "name": "Erro: HubSpot",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -2912,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const s = $input.first().json;\nconst { curso_extra, aulas_extras } = s.beneficios;\nconst response = {\n  success: true,\n  email: s.email,\n  cupom: s.cupom,\n  affiliate_id: s.affiliate_id,\n  hubspot_contact_id: s.hubspot_contact_id,\n  beneficios: {\n    curso_extra: { ...curso_extra, status: s.curso_status },\n    aulas_extras: { ...aulas_extras, status: s.aulas_status },\n  },\n};\nconst log = {\n  timestamp: new Date().toISOString(),\n  email: s.email,\n  cupom: s.cupom,\n  affiliate_id: s.affiliate_id,\n  hubspot_contact_id: s.hubspot_contact_id,\n  curso_extra_codigo: curso_extra.liberar ? curso_extra.codigo : '',\n  curso_status: s.curso_status,\n  qtd_aulas_extras: aulas_extras.liberar ? aulas_extras.quantidade : '',\n  aulas_status: s.aulas_status,\n  resultado: 'success',\n  erro: '',\n};\nreturn [{ json: { response, log } }];"
+      },
+      "id": "afe36991-5bb6-4575-9c44-36e3d7cda190",
+      "name": "Montar Resposta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2912,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json.response) }}",
+        "options": {
+          "responseCode": "=200"
+        }
+      },
+      "id": "5ca26c43-ec35-4895-95d9-2cce413a7bd0",
+      "name": "Responder Sucesso",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -2688,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: $('Montar Resposta').first().json.log }];"
+      },
+      "id": "e68850e1-6a74-451e-ac3a-06f5bcea1e18",
+      "name": "Linha de Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2464,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Config').first().json.sheet_id }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Config').first().json.sheet_resgates }}",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "78584e37-9761-4fbb-b2b5-20f3b7cdefe7",
+      "name": "Registrar Resgate (Sheets)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -2240,
+        -240
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Antes de ativar\n1. Preencher o nó **Config** (ID da planilha e nomes internos das propriedades do HubSpot)\n2. Credencial **Header Auth** no Webhook\n3. Credencial **Google Sheets** nos dois nós de planilha\n4. HubSpot já usa a credencial existente",
+        "height": 260,
+        "width": 520,
+        "color": 4
+      },
+      "id": "df112c65-d45a-48d3-814d-880bc367e949",
+      "name": "Nota 30",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -7360,
+        -608
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Liberação dos benefícios\nCurso e aulas só acrescentam propriedades ao PATCH. A gravação no HubSpot é um PATCH único (afiliado + curso).\n\nAulas: liberação real **pendente**, hoje só marca `aulas_status = pending`.",
+        "height": 220,
+        "width": 640,
+        "color": 3
+      },
+      "id": "4dd0a829-cd41-4703-bd6a-fad2e4d957e9",
+      "name": "Nota 31",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -4480,
+        -784
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Erros\nRespondem na hora com o código HTTP e `{ success: false, reason }`. Só resgates com sucesso vão para o log.",
+        "height": 140,
+        "width": 480,
+        "color": 7
+      },
+      "id": "404f1510-f280-46ec-88cc-108f14097604",
+      "name": "Nota 32",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -6480,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Log depois da resposta\nO aluno recebe a resposta antes da escrita no Sheets. Falha no log não afeta o resgate.",
+        "height": 140,
+        "width": 480,
+        "color": 7
+      },
+      "id": "719ebe8d-ab97-430d-8ccd-13a9d801c353",
+      "name": "Nota 33",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2704,
+        -32
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "Validar Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Payload": {
+      "main": [
+        [
+          {
+            "node": "Payload válido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Payload válido?": {
+      "main": [
+        [
+          {
+            "node": "Ler Cupons (Sheets)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro: Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler Cupons (Sheets)": {
+      "main": [
+        [
+          {
+            "node": "Avaliar Cupom",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Avaliar Cupom": {
+      "main": [
+        [
+          {
+            "node": "Cupom válido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cupom válido?": {
+      "main": [
+        [
+          {
+            "node": "Preparar Tentativa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro: Cupom",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Tentativa": {
+      "main": [
+        [
+          {
+            "node": "HubSpot Search Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HubSpot Search Contact": {
+      "main": [
+        [
+          {
+            "node": "Processar Busca",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Busca": {
+      "main": [
+        [
+          {
+            "node": "Contato encontrado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contato encontrado?": {
+      "main": [
+        [
+          {
+            "node": "Montar Propriedades",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tentar de novo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tentar de novo?": {
+      "main": [
+        [
+          {
+            "node": "Aguardar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro: Contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aguardar": {
+      "main": [
+        [
+          {
+            "node": "Preparar Tentativa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar Propriedades": {
+      "main": [
+        [
+          {
+            "node": "Libera curso?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Libera curso?": {
+      "main": [
+        [
+          {
+            "node": "Liberar Curso Extra",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Libera aulas?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Liberar Curso Extra": {
+      "main": [
+        [
+          {
+            "node": "Libera aulas?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Libera aulas?": {
+      "main": [
+        [
+          {
+            "node": "Liberar Aulas (PENDENTE)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Preparar PATCH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Liberar Aulas (PENDENTE)": {
+      "main": [
+        [
+          {
+            "node": "Preparar PATCH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar PATCH": {
+      "main": [
+        [
+          {
+            "node": "HubSpot PATCH Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HubSpot PATCH Contact": {
+      "main": [
+        [
+          {
+            "node": "Processar PATCH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar PATCH": {
+      "main": [
+        [
+          {
+            "node": "PATCH ok?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PATCH ok?": {
+      "main": [
+        [
+          {
+            "node": "Montar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro: HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar Resposta": {
+      "main": [
+        [
+          {
+            "node": "Responder Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responder Sucesso": {
+      "main": [
+        [
+          {
+            "node": "Linha de Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Linha de Log": {
+      "main": [
+        [
+          {
+            "node": "Registrar Resgate (Sheets)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "786f36ce-cf2d-492f-8831-5fe91c5a844d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a3d098b391e71d86291207ab9432815aff608168f1a914dbf34a831e5f957789"
+  },
+  "id": "iVSKgmy6RFWlC2Ja",
+  "tags": []
+}

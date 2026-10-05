@@ -77,10 +77,13 @@ export function PlanCta({ plan }: { plan: Plan }) {
   const { unlocked, bonusUnlocked, coupon, openFor } = useLeadGate()
 
   if (unlocked) {
-    const href = bonusUnlocked && plan.hasBonus ? withCoupon(plan.checkout, coupon) : plan.checkout
+    const withBonus = bonusUnlocked && plan.hasBonus
     return (
-      <a href={href} className="btn btn--coral btn--block plan__cta">
-        Comprar agora
+      <a
+        href={withBonus ? withCoupon(plan.checkout, coupon) : plan.checkout}
+        className="btn btn--coral btn--block plan__cta"
+      >
+        {withBonus ? 'Comprar agora com bônus' : 'Comprar agora'}
       </a>
     )
   }
@@ -99,7 +102,10 @@ export function PlanCta({ plan }: { plan: Plan }) {
   )
 }
 
-/** Segundo botão do card, abaixo do "Comprar agora": leva ao campo de cupom da seção de bônus. */
+/**
+ * Botão de bônus do card. Antes do cupom fica abaixo do "Comprar agora" e leva
+ * ao campo de cupom; ativado, vira o selo "Bônus ativado" acima da compra.
+ */
 export function BonusCta({ plan }: { plan: Plan }) {
   const { unlocked, bonusUnlocked, bonusAvailable, openBonus } = useLeadGate()
   if (!unlocked || !plan.hasBonus || !bonusAvailable) return null

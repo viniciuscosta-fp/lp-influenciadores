@@ -860,6 +860,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .bonus__eligibility { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 12px; }
 
+/* Planos com bônus dentro da seção escura, depois da ativação do cupom. */
+.bonus__plans { margin-top: 72px; scroll-margin-top: 24px; }
+.bonus__plans-title {
+  text-align: center;
+  font-size: 24px; font-weight: 700; letter-spacing: -0.02em;
+  margin: 0 0 48px;
+}
+.bonus__plans .plans__grid { grid-template-columns: repeat(2, 1fr); max-width: 760px; margin: 0 auto; }
+/* O card destacado é da cor do fundo: a borda é o que o separa da seção. */
+.bonus__plans .plan--featured { border-color: rgba(255,255,255,0.18); }
+
 /* Campo de cupom inline, no lugar do CTA do total. */
 .bonus-coupon { display: flex; flex-direction: column; gap: 8px; min-width: 340px; text-align: left; }
 .bonus-coupon__label {
@@ -895,6 +906,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .bonus-card--feature { grid-row: auto; grid-column: auto; }
   .bonus__total { grid-template-columns: 1fr; gap: 24px; text-align: center; }
   .bonus-coupon { min-width: 0; }
+  .bonus__plans { margin-top: 56px; }
+  .bonus__plans-title { font-size: 20px; margin-bottom: 32px; }
+  .bonus__plans .plans__grid { grid-template-columns: 1fr; max-width: 420px; }
 }
 @media (max-width: 500px) {
   .bonus__total { padding: 24px 20px; }
@@ -1183,7 +1197,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* ====================================================================
  * BLOCK 9 — COMPARISON TABLE
  * ==================================================================== */
-.compare { color: #fff; }
+/* Vem logo depois do Aspiracional, também escuro: o filete separa os dois. */
+.compare { color: #fff; border-top: 1px solid var(--ink-line); }
 .compare__head { text-align: center; margin-bottom: 56px; max-width: 720px; margin-left: auto; margin-right: auto; }
 .compare__head .eyebrow { color: var(--coral); justify-content: center; }
 .compare__head h2 { margin-top: 16px; }
@@ -1706,7 +1721,7 @@ body.plans-unlocked .plan__offer { margin-top: 8px; }
 .plan--featured .plan__bonus-hint { background: rgba(254,207,80,0.16); color: #FECF50; }
 .plan__bonus-hint + .plan__desc { margin-top: 14px; }
 
-/* Segundo botão, logo abaixo do "Comprar agora". */
+/* Segundo botão, logo abaixo do "Comprar agora" (ativado, sobe para cima dele). */
 .plan__bonus-cta {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   width: 100%;
@@ -1731,6 +1746,7 @@ body.plans-unlocked .plan__offer { margin-top: 8px; }
 .plan--featured .plan__bonus-cta svg { color: #523800; }
 .plan__bonus-cta.is-done,
 .plan--featured .plan__bonus-cta.is-done {
+  margin: 0 0 10px;
   cursor: default; transform: none;
   border-color: rgba(0,194,52,0.35);
   background: rgba(0,194,52,0.1);

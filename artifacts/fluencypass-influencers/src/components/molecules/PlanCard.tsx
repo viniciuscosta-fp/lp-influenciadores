@@ -5,7 +5,7 @@ import { BonusCta, PlanCta, useLeadGate } from '@/components/organisms/LeadGate'
 import type { Plan } from '@/content/shared'
 
 export function PlanCard({ plan }: { plan: Plan }) {
-  const { unlocked, bonusAvailable } = useLeadGate()
+  const { unlocked, bonusAvailable, bonusUnlocked } = useLeadGate()
   return (
     <article className={plan.featured ? 'plan plan--featured' : 'plan'}>
       {plan.ribbon && <span className="plan__ribbon">{plan.ribbon}</span>}
@@ -39,8 +39,17 @@ export function PlanCard({ plan }: { plan: Plan }) {
           </li>
         ))}
       </ul>
-      <PlanCta plan={plan} />
-      <BonusCta plan={plan} />
+      {bonusUnlocked && plan.hasBonus ? (
+        <>
+          <BonusCta plan={plan} />
+          <PlanCta plan={plan} />
+        </>
+      ) : (
+        <>
+          <PlanCta plan={plan} />
+          <BonusCta plan={plan} />
+        </>
+      )}
     </article>
   )
 }

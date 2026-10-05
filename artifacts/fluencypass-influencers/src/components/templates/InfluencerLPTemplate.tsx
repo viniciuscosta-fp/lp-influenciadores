@@ -12,7 +12,10 @@ import { Testimonial } from '@/components/organisms/Testimonial'
 import { Virada } from '@/components/organisms/Virada'
 import type { InfluencerLP } from '@/content/types'
 
-/** Os 11 blocos, na ordem definida pelo briefing. */
+/**
+ * Os 11 blocos. O Comparativo fica antes dos planos: a prova vem logo depois
+ * da frase-âncora do Aspiracional.
+ */
 export function InfluencerLPTemplate({ lp }: { lp: InfluencerLP }) {
   return (
     <LeadGateProvider lp={lp}>
@@ -20,12 +23,12 @@ export function InfluencerLPTemplate({ lp }: { lp: InfluencerLP }) {
       <Ribbon lp={lp} />
       <Virada lp={lp} />
       <Aspiracional lp={lp} />
+      <Comparativo lp={lp} />
       <Planos lp={lp} />
       <BonusKit lp={lp} />
       <Testimonial lp={lp} />
       <Metodo lp={lp} />
       <Alunos />
-      <Comparativo lp={lp} />
       <Faq lp={lp} />
       <Footer lp={lp} />
     </LeadGateProvider>

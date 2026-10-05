@@ -24,7 +24,7 @@ _Replace the heading above with the project's name, and this line with one sente
 
 - Cadastro de lead das LPs: formulário em `artifacts/fluencypass-influencers/src/components/organisms/LeadGate.tsx` → proxy em `artifacts/api-server/src/routes/lead.ts` → webhook n8n. Contrato do payload e códigos de resposta em `docs/Webhook Cadastro Marketing - Documentacao.md`.
 - Oferta de bônus por cupom (chamada "Ative o bônus e ganhe R$ X", trava geral e janela por dia do mês): `BONUS_OFFER` em `artifacts/fluencypass-influencers/src/content/shared.tsx`; trava por LP em `bonusActivation` no `content/<slug>.tsx`. O lead tira todos os vidros; os bônus ficam "inativos" até o cupom ser digitado no campo da seção de bônus (`BonusKit.tsx`).
-- Ativação do cupom: `BonusKit.tsx` → `activateBonus` (`LeadGate.tsx`) → proxy `artifacts/api-server/src/routes/bonus.ts` → webhook n8n `ativacao-bonus-cupom` (planilha + PATCH no HubSpot, que libera o curso). O n8n é a fonte de verdade do cupom; `VALID_COUPONS` só pré-preenche e atribui. Contrato em `docs/Webhook Ativacao Bonus - Especificacao.md`.
+- Ativação do cupom: `BonusKit.tsx` → `activateBonus` (`LeadGate.tsx`) → proxy `artifacts/api-server/src/routes/bonus.ts` → webhook n8n `lp-creators/resgatar-cupom` (planilha + PATCH no HubSpot, que libera o curso; exige `N8N_BONUS_WEBHOOK_TOKEN`). O n8n é a fonte de verdade do cupom; `VALID_COUPONS` só pré-preenche e atribui. Contrato em `docs/Webhook Ativacao Bonus - Especificacao.md`.
 
 _Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
 

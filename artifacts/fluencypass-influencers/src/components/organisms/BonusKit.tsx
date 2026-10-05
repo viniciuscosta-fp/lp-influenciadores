@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Cta } from '@/components/atoms/Cta'
 import { Icon } from '@/components/atoms/Icon'
 import { GlassLock } from '@/components/molecules/GlassLock'
+import { PlanCard } from '@/components/molecules/PlanCard'
 import {
   BONUS_COUPON_FIELD,
   normalizeCoupon,
@@ -143,10 +144,8 @@ export function BonusKit({ lp }: { lp: InfluencerLP }) {
   const { bonusAvailable, bonusUnlocked, coupon, openBonus } = useLeadGate()
   const status: BonusStatus = bonusUnlocked ? 'active' : bonusAvailable ? 'inactive' : 'unavailable'
 
-  const eligible = getPlans(lp.bonusModule, lp.tone)
-    .filter((p) => p.hasBonus)
-    .map((p) => p.name)
-  const eligibility = `Válido nos planos ${eligible.join(' e ')}.`
+  const bonusPlans = getPlans(lp.bonusModule, lp.tone).filter((p) => p.hasBonus)
+  const eligibility = `Válido nos planos ${bonusPlans.map((p) => p.name).join(' e ')}.`
 
   return (
     <section className="section section--dark bonus" id="bonus" data-screen-label="05 Bonus Kit">
@@ -222,11 +221,23 @@ export function BonusKit({ lp }: { lp: InfluencerLP }) {
             </div>
             <div className="bonus__action">
               {status === 'inactive' && <BonusCouponForm lp={lp} />}
-              {status === 'active' && <Cta label="Escolher meu plano com bônus" />}
+              {status === 'active' && <Cta href="#bonus-planos" label="Escolher meu plano com bônus" />}
               {status === 'unavailable' && <Cta />}
             </div>
           </div>
         </GlassLock>
+
+        {/* Ativado o cupom, a compra fica aqui mesmo: sem voltar até a seção de planos. */}
+        {status === 'active' && (
+          <div className="bonus__plans" id="bonus-planos">
+            <h3 className="bonus__plans-title">Escolha seu plano com os bônus ativos</h3>
+            <div className="plans__grid">
+              {bonusPlans.map((plan) => (
+                <PlanCard key={plan.id} plan={plan} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )
